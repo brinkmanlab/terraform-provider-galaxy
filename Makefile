@@ -9,7 +9,7 @@ OS_ARCH=linux_amd64
 default: install
 
 build:
-	go build -o ${BINARY}
+	go build -o ./bin/registry.terraform.io/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}/${BINARY}
 
 release:
 	GOOS=darwin GOARCH=amd64 go build -o ./bin/${BINARY}_${VERSION}_darwin_amd64
@@ -33,5 +33,7 @@ test:
 	go test -i $(TEST) || exit 1                                                   
 	echo $(TEST) | xargs -t -n4 go test $(TESTARGS) -timeout=30s -parallel=4                    
 
-testacc: 
-	TF_ACC=1 go test $(TEST) -v $(TESTARGS) -timeout 120m   
+testacc:
+    TEST_BENCH=$(docker run --rm -d -p 8080:80 bgruening/galaxy-stable)
+	GALAXY_HOST=localhost:8080 GALAXY_APIKEY=fakekey TF_ACC=1 go test $(TEST) -v $(TESTARGS) -timeout 120m
+	docker kill $(TEST_BENCH)

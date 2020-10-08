@@ -64,7 +64,7 @@ func resourceRepository() *schema.Resource {
 			},
 			"changeset_revision": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
 			},
 			"include_datatypes": &schema.Schema{
 				Type:     schema.TypeBool,

@@ -27,11 +27,13 @@ func resourceStoredWorkflow() *schema.Resource {
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
-				Computed: true,
 			},
 			"tags": &schema.Schema{
-				Type:     schema.TypeString,
-				Computed: true,
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
 			},
 			"deleted": &schema.Schema{
 				Type:     schema.TypeBool,
@@ -44,7 +46,6 @@ func resourceStoredWorkflow() *schema.Resource {
 			"show_in_tool_panel": &schema.Schema{
 				Type:     schema.TypeBool,
 				Optional: true,
-				Computed: true,
 			},
 			"url": &schema.Schema{
 				Type:     schema.TypeString,
@@ -56,7 +57,7 @@ func resourceStoredWorkflow() *schema.Resource {
 			},
 			"published": &schema.Schema{
 				Type:     schema.TypeBool,
-				Computed: true,
+				Optional: true,
 			},
 			"owner": &schema.Schema{
 				Type:     schema.TypeString,
@@ -66,23 +67,22 @@ func resourceStoredWorkflow() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"inputs": &schema.Schema{
-				Type:     schema.TypeList,
-				Computed: true,
-			},
+			//"inputs": &schema.Schema{
+			//	Type:     schema.TypeList,
+			//	Computed: true,
+			//},
 			"annotation": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
-				Computed: true,
 			},
 			"version": &schema.Schema{
 				Type:     schema.TypeInt,
 				Computed: true,
 			},
-			"steps": &schema.Schema{
-				Type:     schema.TypeList,
-				Computed: true,
-			},
+			//"steps": &schema.Schema{
+			//	Type:     schema.TypeList,
+			//	Computed: true,
+			//},
 		},
 	}
 }

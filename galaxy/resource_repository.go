@@ -2,6 +2,7 @@ package galaxy
 
 import (
 	"context"
+	"fmt"
 	"github.com/brinkmanlab/blend4go"
 	"github.com/brinkmanlab/blend4go/repositories"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -124,18 +125,38 @@ func resourceRepository() *schema.Resource {
 func resourceRepositoryCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	g := m.(*blend4go.GalaxyInstance)
 
-	if err := repositories.Install(ctx, g,
-		d.Get("tool_shed").(string),
-		d.Get("name").(string),
-		d.Get("owner").(string),
-		d.Get("changeset_revision").(string),
+	toolShed := d.Get("tool_shed").(string)
+	owner := d.Get("owner").(string)
+	name := d.Get("name").(string)
+	revision := d.Get("changeset_revision").(string)
+
+	if repos, err := repositories.Install(ctx, g,
+		toolShed,
+		owner,
+		name,
+		revision,
 		d.Get("install_tool_dependencies").(bool),
 		d.Get("install_repository_dependencies").(bool),
 		d.Get("install_resolver_dependencies").(bool),
 		d.Get("tool_panel_section_id").(string),
 		d.Get("new_tool_panel_section_label").(string),
 	); err == nil {
-		return nil //toSchema(workflow, d)
+		if repos == nil || len(repos) == 0 {
+			return diag.Errorf("Repository %v/%v/%v/%v already installed", toolShed, owner, name, revision)
+		}
+		var diags diag.Diagnostics
+		if len(repos) > 1 {
+			var ids []string
+			for _, repo := range repos {
+				ids = append(ids, repo.GetID())
+			}
+			diags = append(diags, diag.Diagnostic{
+				Severity: diag.Error,
+				Summary:  fmt.Sprintf("Unexpected number of repositories created: %v", len(repos)),
+				Detail:   fmt.Sprintf("Repository IDs: %v", ids),
+			})
+		}
+		return append(diags, toSchema(repos[0], d)...)
 	} else {
 		return diag.FromErr(err)
 	}

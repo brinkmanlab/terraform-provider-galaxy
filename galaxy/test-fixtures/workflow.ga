@@ -1,0 +1,50 @@
+{
+  "uuid": "d711f583-9dd2-422a-a6b7-f341edf14a6e",
+  "tags": [],
+  "format-version": "0.1",
+  "name": "Test workflow",
+  "version": 1,
+  "steps": {
+    "0": {
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "tool_version": "1.0",
+      "outputs": [
+        {
+          "type": "txt",
+          "name": "outfile"
+        }
+      ],
+      "workflow_outputs": [
+        {
+          "output_name": "outfile",
+          "uuid": "88f8f053-6093-498a-a928-fdc898e3eb4c",
+          "label": null
+        }
+      ],
+      "input_connections": {},
+      "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
+      "id": 0,
+      "tool_shed_repository": {
+        "owner": "brinkmanlab",
+        "changeset_revision": "7222917a3948",
+        "name": "awkscript",
+        "tool_shed": "toolshed.g2.bx.psu.edu"
+      },
+      "uuid": "787c03da-585c-465a-bc6b-7377085f9943",
+      "errors": null,
+      "name": "AWK Script",
+      "post_job_actions": {},
+      "label": null,
+      "inputs": [],
+      "position": {
+        "top": 282.5,
+        "left": 605.5
+      },
+      "annotation": "",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "type": "tool"
+    }
+  },
+  "annotation": "",
+  "a_galaxy_workflow": "true"
+}

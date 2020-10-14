@@ -213,7 +213,7 @@ func resourceJobRead(ctx context.Context, d *schema.ResourceData, m interface{})
 	var jobList []*jobs.Job
 
 	// Get first job
-	if job, err := jobs.Get(ctx, g, d.Get("id").(string)); err == nil {
+	if job, err := jobs.Get(ctx, g, d.Id()); err == nil {
 		jobList = append(jobList, job)
 	} else {
 		diags = append(diags, diag.FromErr(err)...)

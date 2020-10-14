@@ -66,7 +66,9 @@ func resourceUser() *schema.Resource {
 			"tags_used": &schema.Schema{
 				Type:     schema.TypeList,
 				Computed: true,
-				Elem:     schema.TypeString,
+				Elem: schema.Schema{
+					Type: schema.TypeString,
+				},
 			},
 		},
 	}

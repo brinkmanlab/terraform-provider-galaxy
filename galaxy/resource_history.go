@@ -107,10 +107,10 @@ func resourceHistory() *schema.Resource {
 				Type:     schema.TypeBool,
 				Optional: true,
 			},
-			"model_class": &schema.Schema{
-				Type:     schema.TypeString,
-				Computed: true,
-			},
+			//"model_class": &schema.Schema{
+			//	Type:     schema.TypeString,
+			//	Computed: true,
+			//},
 			"purged": &schema.Schema{
 				Type:     schema.TypeBool,
 				Computed: true,
@@ -145,7 +145,7 @@ func resourceHistoryCreate(ctx context.Context, d *schema.ResourceData, m interf
 func resourceHistoryRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	g := m.(*blend4go.GalaxyInstance)
 
-	if history, err := histories.Get(ctx, g, d.Get("id").(string)); err == nil {
+	if history, err := histories.Get(ctx, g, d.Id()); err == nil {
 		return toSchema(history, d)
 	} else {
 		return diag.FromErr(err)

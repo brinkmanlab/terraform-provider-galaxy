@@ -31,6 +31,7 @@ func resourceRepository() *schema.Resource {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "Repository name",
+				ForceNew:    true,
 			},
 			"deleted": {
 				Type:        schema.TypeBool,
@@ -150,6 +151,7 @@ func resourceRepository() *schema.Resource {
 				Optional:    true,
 				Default:     true,
 				Description: "Repository files from disk on uninstall",
+				ForceNew:    true,
 			},
 		},
 		Description: "Tools are bundled and installed as repositories made available via [Galaxy Toolshed](https://toolshed.g2.bx.psu.edu/) deployments. This resource represents and manages an installed repository within a Galaxy instance.",

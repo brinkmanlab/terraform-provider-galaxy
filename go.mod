@@ -2,16 +2,19 @@ module terraform-provider-galaxy
 
 go 1.15
 
-require github.com/hashicorp/terraform-plugin-sdk/v2 v2.0.3
+replace (
+	github.com/brinkmanlab/blend4go => ../blend4go
+)
 
 require (
 	github.com/agext/levenshtein v1.2.3 // indirect
-	github.com/brinkmanlab/blend4go v0.1.11
+	github.com/brinkmanlab/blend4go v0.2.0
 	github.com/fatih/color v1.9.0 // indirect
 	github.com/hashicorp/go-hclog v0.14.1 // indirect
 	github.com/hashicorp/go-multierror v1.1.0 // indirect
 	github.com/hashicorp/go-uuid v1.0.2 // indirect
 	github.com/hashicorp/hcl/v2 v2.6.0 // indirect
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.0.4
 	github.com/hashicorp/yamux v0.0.0-20200609203250-aecfd211c9ce // indirect
 	github.com/mattn/go-colorable v0.1.7 // indirect
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect

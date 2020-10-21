@@ -10,11 +10,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"html/template"
 	"os"
+	"reflect"
 	"strings"
 	"terraform-provider-galaxy/galaxy"
 	"testing"
+	"text/template"
 )
 
 var testAccProviderFactories map[string]func() (*schema.Provider, error)
@@ -81,7 +82,7 @@ func testAccConfig(tmpl *template.Template, t *testing.T, data interface{}) stri
 	if err := tmpl.Execute(&res, data); err == nil {
 		return res.String()
 	} else {
-		t.Fatalf("Failed to populate config template %v with data: %v", t.Name(), data)
+		t.Fatalf("%v\nFailed to populate config template %v with data: %+v", err, tmpl.Name(), data)
 	}
 	return ""
 }
@@ -92,9 +93,16 @@ func testAccGalaxyInstance() *blend4go.GalaxyInstance {
 
 func testCheckResourceAttrEqual(resourceName, key string, value interface{}) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		_ /*rs*/, ok := s.RootModule().Resources[resourceName]
+		rs, ok := s.RootModule().Resources[resourceName]
 		if !ok {
 			return fmt.Errorf("Not found: %s", resourceName)
+		}
+		if v, ok := rs.Primary.Attributes[key]; ok {
+			if reflect.DeepEqual(v, value) {
+				return fmt.Errorf("unexpected value of %v, expected: %v, got: %v", key, value, v)
+			}
+		} else {
+			return fmt.Errorf("%v not attribute of %v", key, resourceName)
 		}
 		return nil
 	}

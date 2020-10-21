@@ -8,12 +8,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"io/ioutil"
-	"strings"
 	"testing"
 )
 
-const WorkflowPath = "test-fixtures/workflow.ga"
-const WorkflowResourcePath = "test-fixtures/workflow.tf"
+const WorkflowPath = "./test-fixtures/workflow.ga"
+const WorkflowResourcePath = "./test-fixtures/workflow.tf"
 
 func testAccWorkflowExists(resourceName string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
@@ -40,7 +39,7 @@ func testAccWorkflowExists(resourceName string) resource.TestCheckFunc {
 
 func loadWorkflow(path string) (string, map[string]interface{}, error) {
 	if workflow, err := ioutil.ReadFile(path); err == nil {
-		var parsedWorkflow map[string]interface{}
+		parsedWorkflow := make(map[string]interface{})
 		if err := json.Unmarshal(workflow, &parsedWorkflow); err != nil {
 			return "", nil, err
 		}
@@ -53,15 +52,15 @@ func loadWorkflow(path string) (string, map[string]interface{}, error) {
 func TestAccWorkflow_basic(t *testing.T) {
 	tmpl := testAccConfigTemplate(WorkflowResourcePath, t)
 	name := "test"
-	resourceName := "galaxy_workflow." + name
+	resourceName := "galaxy_stored_workflow." + name
 	workflow, parsedWorkflow, err := loadWorkflow(WorkflowPath)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	type tmplFields struct {
-		name string
-		json string
+		Name string
+		Json string
 	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:          testAccPreCheck(t),
@@ -69,7 +68,7 @@ func TestAccWorkflow_basic(t *testing.T) {
 		ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccConfig(tmpl, t, &tmplFields{name: name, json: strings.Replace(workflow, "\"", "\\\"", -1)}),
+				Config: testAccConfig(tmpl, t, &tmplFields{Name: name, Json: workflow}),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					testAccWorkflowExists(resourceName),
 					resource.TestCheckResourceAttr(resourceName, "json", workflow),

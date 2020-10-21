@@ -22,7 +22,7 @@ func testAccUserExists(resourceName string) resource.TestCheckFunc {
 			return fmt.Errorf("ID unset")
 		}
 
-		if res, err := users.Get(context.Background(), testAccGalaxyInstance(), rs.Primary.ID); err == nil {
+		if res, err := users.Get(context.Background(), testAccGalaxyInstance(), rs.Primary.ID, false); err == nil {
 			if res.GetID() != rs.Primary.ID {
 				return fmt.Errorf("ID mismatch between stored ID (%v) and fetched (%v)", rs.Primary.ID, res.GetID())
 			}
@@ -39,10 +39,10 @@ func TestAccUser_basic(t *testing.T) {
 	name := "test"
 	resourceName := "galaxy_user." + name
 	type tmplFields struct {
-		name     string
-		username string
-		password string
-		email    string
+		Name     string
+		Username string
+		Password string
+		Email    string
 	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:          testAccPreCheck(t),
@@ -50,11 +50,12 @@ func TestAccUser_basic(t *testing.T) {
 		ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccConfig(tmpl, t, &tmplFields{name: name, username: "test", password: "test", email: "test@example.com"}),
+				Config: testAccConfig(tmpl, t, &tmplFields{Name: name, Username: "test", Password: "testpass", Email: "test@example.com"}),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					testAccUserExists(resourceName),
 					resource.TestCheckResourceAttr(resourceName, "username", "test"),
 					resource.TestCheckResourceAttr(resourceName, "email", "test@example.com"),
+					resource.TestCheckResourceAttrSet(resourceName, "api_key"),
 					//testCheckResourceAttrEqual(resourceName, "deleted", false),
 					//testCheckResourceAttrEqual(resourceName, "purged", false),
 				),

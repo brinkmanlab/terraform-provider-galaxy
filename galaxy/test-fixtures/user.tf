@@ -1,5 +1,5 @@
-resource "galaxy_user" "{{ $name }}" {
-  username = "{{ $username }}"
-  password = "{{ $password }}"
-  email = "{{ $email }}"
+resource "galaxy_user" "{{ .Name }}" {
+  username = "{{ .Username }}"
+  password = "{{ .Password }}"
+  email = "{{ .Email }}"
 }

@@ -26,7 +26,7 @@
       "id": 0,
       "tool_shed_repository": {
         "owner": "brinkmanlab",
-        "changeset_revision": "7222917a3948",
+        "changeset_revision": "ceac6ffb3865",
         "name": "awkscript",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },

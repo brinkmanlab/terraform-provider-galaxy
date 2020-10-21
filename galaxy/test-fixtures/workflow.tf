@@ -1,3 +1,5 @@
-resource "galaxy_workflow" "test" {
-  json = "{{ $json }}"
+resource "galaxy_stored_workflow" "{{ .Name }}" {
+  json = <<EOF
+{{ .Json -}}
+EOF
 }

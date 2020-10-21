@@ -39,8 +39,8 @@ func TestAccHistory_basic(t *testing.T) {
 	name := "test"
 	resourceName := "galaxy_history." + name
 	type tmplFields struct {
-		name        string
-		historyName string
+		Name        string
+		HistoryName string
 	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:          testAccPreCheck(t),
@@ -48,7 +48,7 @@ func TestAccHistory_basic(t *testing.T) {
 		ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccConfig(tmpl, t, &tmplFields{name: name, historyName: "test"}),
+				Config: testAccConfig(tmpl, t, &tmplFields{Name: name, HistoryName: "test"}),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					testAccHistoryExists(resourceName),
 					resource.TestCheckResourceAttr(resourceName, "name", "test"),

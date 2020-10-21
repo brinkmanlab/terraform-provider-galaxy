@@ -2,48 +2,69 @@ package galaxy
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"github.com/brinkmanlab/blend4go"
 	"github.com/brinkmanlab/blend4go/jobs"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/mitchellh/mapstructure"
+	"time"
 )
+
+var jobOmitFields = map[string]interface{}{"inputs": nil, "outputs": nil, "params": nil, "model_class": nil}
+var jobEnded = map[string]bool{
+	"new":         false,
+	"upload":      false,
+	"waiting":     false,
+	"queued":      false,
+	"running":     false,
+	"ok":          true,
+	"error":       true,
+	"paused":      true,
+	"deleted":     true,
+	"deleted_new": true,
+}
 
 func resourceJob() *schema.Resource {
 	job := map[string]*schema.Schema{
-		"id": &schema.Schema{
-			Type:     schema.TypeString,
-			Computed: true,
-		},
+		//"id": &schema.Schema{
+		//	Type:     schema.TypeString,
+		//	Computed: true,
+		//},
 		"tool_id": &schema.Schema{
-			Type:     schema.TypeString,
-			Computed: true,
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`",
 		},
 		"update_time": &schema.Schema{
-			Type:     schema.TypeString,
-			Computed: true,
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Time job state lst updated",
 		},
 		"history_id": &schema.Schema{
-			Type:     schema.TypeString,
-			Computed: true,
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Id of history where tool outputs are associated",
 		},
 		"exit_code": &schema.Schema{
-			Type:     schema.TypeInt,
-			Computed: true,
+			Type:        schema.TypeInt,
+			Computed:    true,
+			Description: "Exit code as returned by tool execution",
 		},
 		"state": &schema.Schema{
-			Type:     schema.TypeString,
-			Computed: true,
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Running state of job",
 		},
 		"create_time": &schema.Schema{
-			Type:     schema.TypeString,
-			Computed: true,
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Job creation time",
 		},
-		"model_class": &schema.Schema{
-			Type:     schema.TypeString,
-			Computed: true,
-		},
+		//"model_class": &schema.Schema{
+		//	Type:     schema.TypeString,
+		//	Computed: true,
+		//},
 		//"inputs": &schema.Schema{
 		//	Type:     interface{},
 		//	Computed: true,
@@ -63,36 +84,70 @@ func resourceJob() *schema.Resource {
 			Type:         schema.TypeString,
 			Optional:     true,
 			ExactlyOneOf: []string{"tool_id", "tool_uuid"},
+			ForceNew:     true,
+			Description:  "Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`",
 		},
 		"tool_uuid": &schema.Schema{
 			Type:         schema.TypeString,
 			Optional:     true,
 			ExactlyOneOf: []string{"tool_id", "tool_uuid"},
+			ForceNew:     true,
+			Description:  "UUID of tool as assigned by Galaxy instance",
 		},
 		"history_id": &schema.Schema{
-			Type:     schema.TypeString,
-			Required: true,
+			Type:        schema.TypeString,
+			Required:    true,
+			ForceNew:    true,
+			Description: "Id of history where tool outputs are associated",
 		},
-		"param": &schema.Schema{
+		"params": &schema.Schema{
 			Type:     schema.TypeMap,
 			Optional: true,
 			Elem: &schema.Schema{
 				Type: schema.TypeString,
 			},
+			ForceNew:    true,
+			Description: "Map of parameter values keyed on input id",
 		},
 		"hda": &schema.Schema{
-			Type:     schema.TypeMap,
+			Type:     schema.TypeList,
 			Optional: true,
-			Elem: &schema.Schema{
-				Type: schema.TypeString,
+			Elem: &schema.Resource{
+				Schema: map[string]*schema.Schema{
+					"input": &schema.Schema{
+						Type:        schema.TypeString,
+						Required:    true,
+						Description: "Input id as described in Galaxy tool wrapper XML",
+					},
+					"id": &schema.Schema{
+						Type:        schema.TypeString,
+						Required:    true,
+						Description: "HDA id",
+					},
+				},
 			},
+			ForceNew:    true,
+			Description: "Repeatable block of HDA inputs. Specify the same input id in multiple blocks to provide tool multiple HDAs per input.",
 		},
 		"hdca": &schema.Schema{
-			Type:     schema.TypeMap,
+			Type:     schema.TypeList,
 			Optional: true,
-			Elem: &schema.Schema{
-				Type: schema.TypeString,
+			Elem: &schema.Resource{
+				Schema: map[string]*schema.Schema{
+					"input": &schema.Schema{
+						Type:        schema.TypeString,
+						Required:    true,
+						Description: "Input id as described in Galaxy tool wrapper XML",
+					},
+					"id": &schema.Schema{
+						Type:        schema.TypeString,
+						Required:    true,
+						Description: "HDCA id",
+					},
+				},
 			},
+			ForceNew:    true,
+			Description: "Repeatable block of HDCA inputs. Specify the same input id in multiple blocks to provide tool multiple HDCAs per input.",
 		},
 		"additional_jobs": &schema.Schema{
 			Type:     schema.TypeList,
@@ -102,6 +157,14 @@ func resourceJob() *schema.Resource {
 				DeleteContext: resourceJobDelete,
 				Schema:        job,
 			},
+			Description: "If the input parameters spawn multiple jobs, the remaining jobs will be listed here",
+		},
+		"wait_for_completion": &schema.Schema{
+			Type:        schema.TypeBool,
+			Optional:    true,
+			Default:     true,
+			ForceNew:    true,
+			Description: "Wait for job to complete before creating dependant resources",
 		},
 	}
 
@@ -117,12 +180,14 @@ func resourceJob() *schema.Resource {
 		ReadContext:   resourceJobRead,
 		DeleteContext: resourceJobDelete,
 		Schema:        firstJob,
+		Description:   "Execute tools to load data. This is mainly intended for data managers or upload/download tools. Do not use this for data processing!",
 	}
 }
 
+// Handle Job array, converting the first job to the main schema and all others assigned to the additional_jobs field
 func jobsToSchema(job []*jobs.Job, d *schema.ResourceData) diag.Diagnostics {
 	var diags diag.Diagnostics
-	diags = append(diags, toSchema(job[0], d)...)
+	diags = append(diags, toSchema(job[0], d, jobOmitFields)...)
 	var additionalJobs []map[string]interface{}
 	for _, j := range job[1:] {
 		aj := map[string]interface{}{}
@@ -157,50 +222,52 @@ func resourceJobCreate(ctx context.Context, d *schema.ResourceData, m interface{
 	}
 
 	// Prepare param inputs
-	if params, ok := d.GetOk("param"); ok {
-		for i, param := range params.(map[string]map[string]string) {
-			name, name_ok := param["name"]
-			if !name_ok || name == "" {
-				diags = append(diags, diag.Diagnostic{Severity: diag.Error, Summary: fmt.Sprintf("Required 'name' field missing in param #%s", i)})
-			}
-			value, value_ok := param["value"]
-			if !value_ok {
-				diags = append(diags, diag.Diagnostic{Severity: diag.Error, Summary: fmt.Sprintf("Required 'value' field missing in param #%s", i)})
-			}
-			if name_ok && name != "" && value_ok {
-				inputs[name] = value
-			}
+	if params, ok := d.GetOk("params"); ok {
+		for k, v := range params.(map[string]interface{}) {
+			inputs[k] = v.(string)
 		}
 	}
 
 	// Prepare hda and hdca inputs
 	for _, t := range []string{"hda", "hdca"} {
 		if hdas, ok := d.GetOk(t); ok {
-			for i, hda := range hdas.(map[string]map[string]string) {
-				name, name_ok := hda["name"]
-				if !name_ok || name == "" {
-					diags = append(diags, diag.Diagnostic{Severity: diag.Error, Summary: fmt.Sprintf("Required 'name' field missing in %s #%s", t, i)})
+			for _, hda := range hdas.([]map[string]string) {
+				name := hda["input"]
+				in, ok := inputs[name] // All hda with the same input name are merged into same list
+				var input *map[string][]map[string]string
+				if ok {
+					input = in.(*map[string][]map[string]string)
+				} else {
+					input = &map[string][]map[string]string{}
+					inputs[name] = input
 				}
-				value, value_ok := hda["value"]
-				if !value_ok {
-					diags = append(diags, diag.Diagnostic{Severity: diag.Error, Summary: fmt.Sprintf("Required 'value' field missing in %s #%s", t, i)})
-				}
-				if name_ok && name != "" && value_ok {
-					in, ok := inputs[name] // All hda with the same input name are merged into same list
-					input := in.(*map[string][]map[string]string)
-					if !ok {
-						input = &map[string][]map[string]string{}
-						inputs[name] = input
-					}
-					(*input)["values"] = append((*input)["values"], map[string]string{"id": value, "src": t})
-					// TODO 'batch'?
-				}
+				(*input)["values"] = append((*input)["values"], map[string]string{"id": hda["id"], "src": t})
+				// TODO 'batch'?
 			}
 		}
 	}
 
-	if job, _, _, _, err := jobs.NewJob(ctx, g, payload); err == nil { //TODO Expose job outputs?
-		diags = append(diags, jobsToSchema(job, d)...)
+	if jobList, _, _, _, err := jobs.NewJob(ctx, g, payload); err == nil { //TODO Expose job outputs?
+		if d.Get("wait_for_completion").(bool) {
+			complete := true
+			for !complete {
+				complete = true
+				time.Sleep(2 * time.Second)
+				for _, job := range jobList {
+					if _, err := g.Get(ctx, job.GetID(), job, &map[string]string{}); err == nil {
+						complete = complete && jobEnded[job.State]
+					} else {
+						diags = append(diags, diag.FromErr(err)...)
+						complete = false
+					}
+				}
+				if errors.Is(ctx.Err(), context.Canceled) {
+					complete = true
+					break
+				}
+			}
+		}
+		diags = append(diags, jobsToSchema(jobList, d)...)
 	} else {
 		return diag.FromErr(err)
 	}
@@ -220,8 +287,8 @@ func resourceJobRead(ctx context.Context, d *schema.ResourceData, m interface{})
 	}
 
 	// Get additional jobs
-	for _, job := range d.Get("additional_jobs").([]map[string]interface{}) {
-		if job, err := jobs.Get(ctx, g, job["id"].(string)); err == nil {
+	for _, job := range d.Get("additional_jobs").([]interface{}) {
+		if job, err := jobs.Get(ctx, g, job.(map[string]interface{})["id"].(string)); err == nil {
 			jobList = append(jobList, job)
 		} else {
 			diags = append(diags, diag.FromErr(err)...)
@@ -241,7 +308,9 @@ func resourceJobDelete(ctx context.Context, d *schema.ResourceData, m interface{
 	job := new(jobs.Job)
 	job.SetGalaxyInstance(g)
 	diags = append(diags, fromSchema(job, d)...)
-	diags = append(diags, diag.FromErr(job.Delete(ctx))...)
+	if err := job.Delete(ctx); err != nil {
+		diags = append(diags, diag.FromErr(err)...)
+	}
 
 	return diags
 }

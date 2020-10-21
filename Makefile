@@ -6,11 +6,20 @@ BINARY=terraform-provider-${NAME}
 VERSION=0.1
 OS_ARCH=linux_amd64
 
+.ONESHELL:
+
+.PHONY: default
 default: install
 
+.PHONY: build
 build:
 	go build -o ./bin/registry.terraform.io/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}/${BINARY}
 
+.PHONY: doc
+doc:
+	go run ./docgen
+
+.PHONY: release
 release:
 	GOOS=darwin GOARCH=amd64 go build -o ./bin/${BINARY}_${VERSION}_darwin_amd64
 	GOOS=freebsd GOARCH=386 go build -o ./bin/${BINARY}_${VERSION}_freebsd_386
@@ -25,15 +34,22 @@ release:
 	GOOS=windows GOARCH=386 go build -o ./bin/${BINARY}_${VERSION}_windows_386
 	GOOS=windows GOARCH=amd64 go build -o ./bin/${BINARY}_${VERSION}_windows_amd64
 
+.PHONY: install
 install: build
 	mkdir -p ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
 	mv ${BINARY} ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
 
+.PHONY: test
 test: 
 	go test -i $(TEST) || exit 1                                                   
 	echo $(TEST) | xargs -t -n4 go test $(TESTARGS) -timeout=30s -parallel=4                    
 
+.PHONY: testacc
 testacc:
-    TEST_BENCH=$(docker run --rm -d -p 8080:80 bgruening/galaxy-stable)
-	GALAXY_HOST=localhost:8080 GALAXY_APIKEY=fakekey TF_ACC=1 go test $(TEST) -v $(TESTARGS) -timeout 120m
-	docker kill $(TEST_BENCH)
+	function tearDown {
+		docker kill $${TEST_BENCH}
+	}
+	trap tearDown EXIT
+	TEST_BENCH=$$(docker run --rm -d -p 8080:80 -e GALAXY_CONFIG_OVERRIDE_ALLOW_USER_DELETION=true quay.io/bgruening/galaxy:19.09)
+	until curl -sS --fail -o /dev/null "http://localhost:8080/api/version"; do sleep 1; done
+	GALAXY_HOST=http://localhost:8080 GALAXY_API_KEY=admin TF_ACC=1 go test $(TEST) -v $(TESTARGS) -timeout 120m

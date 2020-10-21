@@ -1,3 +1,3 @@
-resource "galaxy_history" "{{ $name }}" {
-  name = "{{ $historyName }}"
+resource "galaxy_history" "{{ .Name }}" {
+  name = "{{ .HistoryName }}"
 }

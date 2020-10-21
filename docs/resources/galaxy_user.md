@@ -20,6 +20,7 @@ resource "galaxy_user" "example" {
 
 * `email` - &lt;String&gt; (Required) Users email address  
 * `password` - &lt;String&gt; (Required) Password to authenticate user against Galaxy  
+* `purge` - &lt;Bool&gt; (Optional) Purge a user on deletion \[Default: true]  
 * `username` - &lt;String&gt; (Required) Username to identify user  
 
 
@@ -31,6 +32,7 @@ resource "galaxy_user" "example" {
 * `is_admin` - &lt;Bool&gt; User is administrator  
 * `nice_total_disk_usage` - &lt;String&gt; Human readable total disk usage of users stored data  
 * `password` - &lt;String&gt; Password to authenticate user against Galaxy  
+* `purge` - &lt;Bool&gt; Purge a user on deletion  
 * `purged` - &lt;Bool&gt; User purged  
 * `quota` - &lt;String&gt; Maximum disk storage available to user  
 * `quota_percent` - &lt;Int&gt; Storage quota, between 0 and 100  

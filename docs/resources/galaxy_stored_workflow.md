@@ -1,6 +1,6 @@
 # galaxy_stored_workflow Resource
 
-
+[Galaxy workflows](https://galaxyproject.org/learn/advanced-workflow/) are groups of jobs chained together to process data. This resource represents and manages a workflow stored in a Galaxy instance.
 
 ## Example Usage
 

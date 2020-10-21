@@ -1,6 +1,6 @@
 # galaxy_repository Resource
 
-
+Tools are bundled and installed as repositories made available via [Galaxy Toolshed](https://toolshed.g2.bx.psu.edu/) deployments. This resource represents and manages an installed repository within a Galaxy instance.
 
 ## Example Usage
 

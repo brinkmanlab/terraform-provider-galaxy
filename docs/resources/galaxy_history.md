@@ -1,6 +1,6 @@
 # galaxy_history Resource
 
-
+Galaxy histories organise and group data into &#39;workspaces&#39;. All datasets must be associated with a history, including job outputs.
 
 ## Example Usage
 

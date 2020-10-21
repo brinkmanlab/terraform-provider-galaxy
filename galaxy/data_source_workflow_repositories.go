@@ -13,32 +13,32 @@ func dataSourceWorkflowRepositories() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataSourceWorkflowRepositoriesRead,
 		Schema: map[string]*schema.Schema{
-			"json": &schema.Schema{
+			"json": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "JSON encoded workflow. See terraform file() to load a .ga file.",
 			},
-			"repositories": &schema.Schema{
+			"repositories": {
 				Type:     schema.TypeSet,
 				Computed: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
-						"name": &schema.Schema{
+						"name": {
 							Type:        schema.TypeString,
 							Computed:    true,
 							Description: "Repository name",
 						},
-						"tool_shed": &schema.Schema{
+						"tool_shed": {
 							Type:        schema.TypeString,
 							Computed:    true,
 							Description: "Toolshed hostname",
 						},
-						"owner": &schema.Schema{
+						"owner": {
 							Type:        schema.TypeString,
 							Computed:    true,
 							Description: "Repository owner",
 						},
-						"changeset_revision": &schema.Schema{
+						"changeset_revision": {
 							Type:        schema.TypeString,
 							Computed:    true,
 							Description: "Changeset revision",
@@ -52,7 +52,7 @@ func dataSourceWorkflowRepositories() *schema.Resource {
 	}
 }
 
-func dataSourceWorkflowRepositoriesRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func dataSourceWorkflowRepositoriesRead(_ context.Context, d *schema.ResourceData, _ interface{}) diag.Diagnostics {
 	if repos, err := workflows.Repositories(d.Get("json").(string)); err == nil {
 		r := make([]map[string]string, len(repos))
 		for i, repo := range repos {

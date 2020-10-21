@@ -15,126 +15,129 @@ func resourceRepository() *schema.Resource {
 	return &schema.Resource{
 		CreateContext: resourceRepositoryCreate,
 		ReadContext:   resourceRepositoryRead,
-		UpdateContext: resourceRepositoryUpdate,
+		//UpdateContext: resourceRepositoryUpdate,
 		DeleteContext: resourceRepositoryDelete,
 		Schema: map[string]*schema.Schema{
-			//"id": &schema.Schema{
+			//"id": {
 			//	Type:     schema.TypeString,
 			//	Computed: true,
 			//},
-			"status": &schema.Schema{
+			"status": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Installation status",
 			},
-			"name": &schema.Schema{
+			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "Repository name",
 			},
-			"deleted": &schema.Schema{
+			"deleted": {
 				Type:        schema.TypeBool,
 				Computed:    true,
 				Description: "Repository deleted",
 			},
-			"ctx_rev": &schema.Schema{
+			"ctx_rev": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"error_message": &schema.Schema{
+			"error_message": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Install error message",
 			},
-			"installed_changeset_revision": &schema.Schema{
+			"installed_changeset_revision": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Installed changeset revision",
 			},
-			"tool_shed": &schema.Schema{
+			"tool_shed": {
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    true,
 				Description: "Repository toolshed",
 			},
-			"dist_to_shed": &schema.Schema{
+			"dist_to_shed": {
 				Type:     schema.TypeBool,
 				Computed: true,
 			},
-			"url": &schema.Schema{
+			"url": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Repository url",
 			},
-			"uninstalled": &schema.Schema{
+			"uninstalled": {
 				Type:        schema.TypeBool,
 				Computed:    true,
 				Description: "Uninstalled",
 			},
-			"owner": &schema.Schema{
+			"owner": {
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    true,
 				Description: "Repository owner",
 			},
-			"changeset_revision": &schema.Schema{
+			"changeset_revision": {
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    true,
 				Description: "Changeset revision of repository",
 			},
-			"include_datatypes": &schema.Schema{
+			"include_datatypes": {
 				Type:        schema.TypeBool,
 				Computed:    true,
 				Description: "Repository includes datatypes",
 			},
-			"latest_installable_revision": &schema.Schema{
+			"latest_installable_revision": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Latest installable revision of repository",
 			},
-			"revision_update": &schema.Schema{
+			"revision_update": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "https://github.com/galaxyproject/galaxy/issues/10453",
 			},
-			"revision_upgrade": &schema.Schema{
+			"revision_upgrade": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "https://github.com/galaxyproject/galaxy/issues/10453",
 			},
-			"repository_deprecated": &schema.Schema{
+			"repository_deprecated": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Repository depreciated. https://github.com/galaxyproject/galaxy/issues/10453",
 			},
-			"install_tool_dependencies": &schema.Schema{
+			"install_tool_dependencies": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
 				Description: "Install tool dependencies using the configured dependency manager",
+				ForceNew:    true,
 			},
-			"install_repository_dependencies": &schema.Schema{
+			"install_repository_dependencies": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
 				Deprecated:  "Repository dependencies are depreciated",
 				Description: "Install repository dependencies from toolshed",
+				ForceNew:    true,
 			},
-			"install_resolver_dependencies": &schema.Schema{
+			"install_resolver_dependencies": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
 				Description: "Install resolver dependencies",
+				ForceNew:    true,
 			},
-			"tool_panel_section_id": &schema.Schema{
+			"tool_panel_section_id": {
 				Type:          schema.TypeString,
 				Optional:      true,
 				ConflictsWith: []string{"new_tool_panel_section_label"},
 				ForceNew:      true,
 				Description:   "Tool panel section ID to list tool under",
 			},
-			"new_tool_panel_section_label": &schema.Schema{
+			"new_tool_panel_section_label": {
 				Type:          schema.TypeString,
 				Optional:      true,
 				Default:       "",
@@ -142,7 +145,7 @@ func resourceRepository() *schema.Resource {
 				ForceNew:      true,
 				Description:   "Label of tool panel section to create and list tool under",
 			},
-			"remove_from_disk": &schema.Schema{
+			"remove_from_disk": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     true,

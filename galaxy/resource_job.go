@@ -27,80 +27,80 @@ var jobEnded = map[string]bool{
 
 func resourceJob() *schema.Resource {
 	job := map[string]*schema.Schema{
-		//"id": &schema.Schema{
+		//"id": {
 		//	Type:     schema.TypeString,
 		//	Computed: true,
 		//},
-		"tool_id": &schema.Schema{
+		"tool_id": {
 			Type:        schema.TypeString,
 			Computed:    true,
 			Description: "Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`",
 		},
-		"update_time": &schema.Schema{
+		"update_time": {
 			Type:        schema.TypeString,
 			Computed:    true,
 			Description: "Time job state lst updated",
 		},
-		"history_id": &schema.Schema{
+		"history_id": {
 			Type:        schema.TypeString,
 			Computed:    true,
 			Description: "Id of history where tool outputs are associated",
 		},
-		"exit_code": &schema.Schema{
+		"exit_code": {
 			Type:        schema.TypeInt,
 			Computed:    true,
 			Description: "Exit code as returned by tool execution",
 		},
-		"state": &schema.Schema{
+		"state": {
 			Type:        schema.TypeString,
 			Computed:    true,
 			Description: "Running state of job",
 		},
-		"create_time": &schema.Schema{
+		"create_time": {
 			Type:        schema.TypeString,
 			Computed:    true,
 			Description: "Job creation time",
 		},
-		//"model_class": &schema.Schema{
+		//"model_class": {
 		//	Type:     schema.TypeString,
 		//	Computed: true,
 		//},
-		//"inputs": &schema.Schema{
+		//"inputs": {
 		//	Type:     interface{},
 		//	Computed: true,
 		//},
-		//"outputs": &schema.Schema{
+		//"outputs": {
 		//	Type:     interface{},
 		//	Computed: true,
 		//},
-		//"params": &schema.Schema{
+		//"params": {
 		//	Type:     interface{},
 		//	Computed: true,
 		//},
 	}
 
 	firstJob := map[string]*schema.Schema{
-		"tool_id": &schema.Schema{
+		"tool_id": {
 			Type:         schema.TypeString,
 			Optional:     true,
 			ExactlyOneOf: []string{"tool_id", "tool_uuid"},
 			ForceNew:     true,
 			Description:  "Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`",
 		},
-		"tool_uuid": &schema.Schema{
+		"tool_uuid": {
 			Type:         schema.TypeString,
 			Optional:     true,
 			ExactlyOneOf: []string{"tool_id", "tool_uuid"},
 			ForceNew:     true,
 			Description:  "UUID of tool as assigned by Galaxy instance",
 		},
-		"history_id": &schema.Schema{
+		"history_id": {
 			Type:        schema.TypeString,
 			Required:    true,
 			ForceNew:    true,
 			Description: "Id of history where tool outputs are associated",
 		},
-		"params": &schema.Schema{
+		"params": {
 			Type:     schema.TypeMap,
 			Optional: true,
 			Elem: &schema.Schema{
@@ -109,17 +109,17 @@ func resourceJob() *schema.Resource {
 			ForceNew:    true,
 			Description: "Map of parameter values keyed on input id",
 		},
-		"hda": &schema.Schema{
+		"hda": {
 			Type:     schema.TypeList,
 			Optional: true,
 			Elem: &schema.Resource{
 				Schema: map[string]*schema.Schema{
-					"input": &schema.Schema{
+					"input": {
 						Type:        schema.TypeString,
 						Required:    true,
 						Description: "Input id as described in Galaxy tool wrapper XML",
 					},
-					"id": &schema.Schema{
+					"id": {
 						Type:        schema.TypeString,
 						Required:    true,
 						Description: "HDA id",
@@ -129,17 +129,17 @@ func resourceJob() *schema.Resource {
 			ForceNew:    true,
 			Description: "Repeatable block of HDA inputs. Specify the same input id in multiple blocks to provide tool multiple HDAs per input.",
 		},
-		"hdca": &schema.Schema{
+		"hdca": {
 			Type:     schema.TypeList,
 			Optional: true,
 			Elem: &schema.Resource{
 				Schema: map[string]*schema.Schema{
-					"input": &schema.Schema{
+					"input": {
 						Type:        schema.TypeString,
 						Required:    true,
 						Description: "Input id as described in Galaxy tool wrapper XML",
 					},
-					"id": &schema.Schema{
+					"id": {
 						Type:        schema.TypeString,
 						Required:    true,
 						Description: "HDCA id",
@@ -149,7 +149,7 @@ func resourceJob() *schema.Resource {
 			ForceNew:    true,
 			Description: "Repeatable block of HDCA inputs. Specify the same input id in multiple blocks to provide tool multiple HDCAs per input.",
 		},
-		"additional_jobs": &schema.Schema{
+		"additional_jobs": {
 			Type:     schema.TypeList,
 			Computed: true,
 			Elem: &schema.Resource{
@@ -159,7 +159,7 @@ func resourceJob() *schema.Resource {
 			},
 			Description: "If the input parameters spawn multiple jobs, the remaining jobs will be listed here",
 		},
-		"wait_for_completion": &schema.Schema{
+		"wait_for_completion": {
 			Type:        schema.TypeBool,
 			Optional:    true,
 			Default:     true,
@@ -296,7 +296,7 @@ func resourceJobRead(ctx context.Context, d *schema.ResourceData, m interface{})
 	}
 
 	// Don't apply to schema if errors
-	if diags.HasError() {
+	if diags != nil && diags.HasError() {
 		return diags
 	}
 	return jobsToSchema(jobList, d)

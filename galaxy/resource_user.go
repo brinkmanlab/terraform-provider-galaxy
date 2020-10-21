@@ -17,66 +17,66 @@ func resourceUser() *schema.Resource {
 		UpdateContext: resourceUserUpdate,
 		DeleteContext: resourceUserDelete,
 		Schema: map[string]*schema.Schema{
-			//"id": &schema.Schema{
+			//"id": {
 			//	Type:     schema.TypeString,
 			//	Computed: true,
 			//},
-			"username": &schema.Schema{
+			"username": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "Username to identify user",
 			},
-			"password": &schema.Schema{
+			"password": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Sensitive:   true,
 				Description: "Password to authenticate user against Galaxy",
 			},
-			"quota_percent": &schema.Schema{
+			"quota_percent": {
 				Type:        schema.TypeInt,
 				Computed:    true,
 				Description: "Storage quota, between 0 and 100",
 			},
-			/*"preferences": &schema.Schema{
+			/*"preferences": {
 				Type:     ?,
 				Computed: true,
 			},*/
-			"total_disk_usage": &schema.Schema{
+			"total_disk_usage": {
 				Type:        schema.TypeFloat,
 				Computed:    true,
 				Description: "Total disk usage of users stored data",
 			},
-			"deleted": &schema.Schema{
+			"deleted": {
 				Type:        schema.TypeBool,
 				Computed:    true,
 				Description: "User deleted",
 			},
-			"purged": &schema.Schema{
+			"purged": {
 				Type:        schema.TypeBool,
 				Computed:    true,
 				Description: "User purged",
 			},
-			"nice_total_disk_usage": &schema.Schema{
+			"nice_total_disk_usage": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Human readable total disk usage of users stored data",
 			},
-			"quota": &schema.Schema{
+			"quota": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Maximum disk storage available to user",
 			},
-			"email": &schema.Schema{
+			"email": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "Users email address",
 			},
-			"is_admin": &schema.Schema{
+			"is_admin": {
 				Type:        schema.TypeBool,
 				Computed:    true,
 				Description: "User is administrator",
 			},
-			"tags_used": &schema.Schema{
+			"tags_used": {
 				Type:     schema.TypeList,
 				Computed: true,
 				Elem: &schema.Schema{
@@ -84,13 +84,13 @@ func resourceUser() *schema.Resource {
 				},
 				Description: "List of tags assigned to users resources",
 			},
-			"api_key": &schema.Schema{
+			"api_key": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Sensitive:   true,
 				Description: "API key of user",
 			},
-			"purge": &schema.Schema{
+			"purge": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     true,
@@ -163,8 +163,8 @@ func resourceUserUpdate(ctx context.Context, d *schema.ResourceData, m interface
 	user.SetGalaxyInstance(g)
 	diags = append(diags, fromSchema(user, d)...)
 	if d.HasChange("password") {
-		current, new := d.GetChange("password")
-		if err := user.SetPassword(ctx, current.(string), new.(string)); err != nil {
+		current, change := d.GetChange("password")
+		if err := user.SetPassword(ctx, current.(string), change.(string)); err != nil {
 			diags = append(diags, diag.FromErr(err)...)
 		}
 	}

@@ -19,13 +19,13 @@ Written and maintained by the [Fiona Brinkman Laboratory](https://github.com/bri
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
-			"host": &schema.Schema{
+			"host": {
 				Type:        schema.TypeString,
 				Required:    true,
 				DefaultFunc: schema.EnvDefaultFunc("GALAXY_HOST", nil),
 				Description: "URL to Galaxy instance. Refers to GALAXY_HOST env variable if unset.",
 			},
-			"api_key": &schema.Schema{
+			"api_key": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				Sensitive:    true,
@@ -33,7 +33,7 @@ func Provider() *schema.Provider {
 				ExactlyOneOf: []string{"api_key", "username"},
 				Description:  "API key associated with a Galaxy administrator account. A master API key will fail to create resources that need to be associated with a user. Refers to GALAXY_API_KEY env variable if unset.",
 			},
-			"username": &schema.Schema{
+			"username": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				DefaultFunc:  schema.EnvDefaultFunc("GALAXY_USERNAME", nil),
@@ -41,7 +41,7 @@ func Provider() *schema.Provider {
 				RequiredWith: []string{"password"},
 				Description:  "Username or email address of Galaxy administrator account. Refers to GALAXY_USERNAME env variable if unset.",
 			},
-			"password": &schema.Schema{
+			"password": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				Sensitive:    true,

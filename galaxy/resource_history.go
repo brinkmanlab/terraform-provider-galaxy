@@ -17,46 +17,46 @@ func resourceHistory() *schema.Resource {
 		UpdateContext: resourceHistoryUpdate,
 		DeleteContext: resourceHistoryDelete,
 		Schema: map[string]*schema.Schema{
-			//"id": &schema.Schema{
+			//"id": {
 			//	Type:     schema.TypeString,
 			//	Computed: true,
 			//},
-			"importable": &schema.Schema{
+			"importable": {
 				Type:        schema.TypeBool,
 				Computed:    true,
 				Description: "Importable",
 			},
-			"create_time": &schema.Schema{
+			"create_time": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Time history created",
 			},
-			"contents_url": &schema.Schema{
+			"contents_url": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "API url to history contents",
 			},
-			"size": &schema.Schema{
+			"size": {
 				Type:        schema.TypeInt,
 				Computed:    true,
 				Description: "Total storage size of all containing datasets",
 			},
-			"user_id": &schema.Schema{
+			"user_id": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "User id of assigned user",
 			},
-			"username_and_slug": &schema.Schema{
+			"username_and_slug": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Username and slug",
 			},
-			"annotation": &schema.Schema{
+			"annotation": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "Annotation description of history",
 			},
-			"state_details": &schema.Schema{
+			"state_details": {
 				Type:     schema.TypeMap,
 				Computed: true,
 				Elem: &schema.Schema{
@@ -64,22 +64,22 @@ func resourceHistory() *schema.Resource {
 				},
 				Description: "Map of count of datasets keyed on each state",
 			},
-			"state": &schema.Schema{
+			"state": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Overall state of history and its contents",
 			},
-			"empty": &schema.Schema{
+			"empty": {
 				Type:        schema.TypeBool,
 				Computed:    true,
 				Description: "History empty",
 			},
-			"update_time": &schema.Schema{
+			"update_time": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Time history last modified",
 			},
-			"tags": &schema.Schema{
+			"tags": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Schema{
@@ -87,27 +87,27 @@ func resourceHistory() *schema.Resource {
 				},
 				Description: "List of tags assigned to history",
 			},
-			"deleted": &schema.Schema{
+			"deleted": {
 				Type:        schema.TypeBool,
 				Computed:    true,
 				Description: "Deleted",
 			},
-			"genome_build": &schema.Schema{
+			"genome_build": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "Genome build assigned to history",
 			},
-			"slug": &schema.Schema{
+			"slug": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "Slug",
 			},
-			"name": &schema.Schema{
+			"name": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "History name as displayed to user",
 			},
-			"url": &schema.Schema{
+			"url": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "API url of history",
@@ -122,7 +122,7 @@ func resourceHistory() *schema.Resource {
 			//		},
 			//	},
 			//},
-			"published": &schema.Schema{
+			"published": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Description: "Published",
@@ -131,12 +131,12 @@ func resourceHistory() *schema.Resource {
 			//	Type:     schema.TypeString,
 			//	Computed: true,
 			//},
-			"purged": &schema.Schema{
+			"purged": {
 				Type:        schema.TypeBool,
 				Computed:    true,
 				Description: "Purged",
 			},
-			"purge": &schema.Schema{
+			"purge": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     true,

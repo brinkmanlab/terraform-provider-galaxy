@@ -17,22 +17,22 @@ func resourceStoredWorkflow() *schema.Resource {
 		UpdateContext: resourceStoredWorkflowUpdate,
 		DeleteContext: resourceStoredWorkflowDelete,
 		Schema: map[string]*schema.Schema{
-			//"id": &schema.Schema{
+			//"id": {
 			//	Type:     schema.TypeString,
 			//	Computed: true,
 			//},
-			"json": &schema.Schema{
+			"json": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "JSON encoded workflow. See terraform file() to load a .ga file.",
 			},
-			"name": &schema.Schema{
+			"name": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
 				Description: "Name of stored workflow as displayed to user",
 			},
-			"tags": &schema.Schema{
+			"tags": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Schema{
@@ -40,76 +40,76 @@ func resourceStoredWorkflow() *schema.Resource {
 				},
 				Description: "List of tags assigned to workflow",
 			},
-			"deleted": &schema.Schema{
+			"deleted": {
 				Type:        schema.TypeBool,
 				Computed:    true,
 				Description: "Workflow deleted",
 			},
-			"latest_workflow_uuid": &schema.Schema{
+			"latest_workflow_uuid": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "UUID to uniquely identify stored workflow",
 			},
-			"show_in_tool_panel": &schema.Schema{
+			"show_in_tool_panel": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Description: "Show in tool panel in Galaxy UI",
 			},
-			"url": &schema.Schema{
+			"url": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "URL of workflow within Galaxy API",
 			},
-			"number_of_steps": &schema.Schema{
+			"number_of_steps": {
 				Type:        schema.TypeInt,
 				Computed:    true,
 				Description: "Count of steps in workflow",
 			},
-			"published": &schema.Schema{
+			"published": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Description: "Published",
 			},
-			"owner": &schema.Schema{
+			"owner": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "User workflow is assigned to",
 			},
-			//"model_class": &schema.Schema{
+			//"model_class": {
 			//	Type:     schema.TypeString,
 			//	Computed: true,
 			//},
-			//"inputs": &schema.Schema{
+			//"inputs": {
 			//	Type:     schema.TypeList,
 			//	Computed: true,
 			//},
-			"annotation": &schema.Schema{
+			"annotation": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "Workflow annotation",
 			},
-			"version": &schema.Schema{
+			"version": {
 				Type:        schema.TypeInt,
 				Computed:    true,
 				Description: "Workflow version",
 			},
-			//"steps": &schema.Schema{
+			//"steps": {
 			//	Type:     schema.TypeList,
 			//	Computed: true,
 			//},
-			"import_tools": &schema.Schema{
+			"import_tools": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
 				Description: "Install tools referenced by workflow",
 			},
-			"publish": &schema.Schema{
+			"publish": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
 				Description: "Make workflow available to all users",
 			},
-			"importable": &schema.Schema{
+			"importable": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,

@@ -49,16 +49,16 @@ func fromSchema(m blend4go.GalaxyModel, s *schema.ResourceData) diag.Diagnostics
 				if (value.Kind() != reflect.Map && value.Kind() != reflect.Array && value.Kind() != reflect.Slice) || value.Type().Elem() == f.Type.Elem() {
 					reflect.Indirect(v).FieldByName(f.Name).Set(value.Convert(f.Type))
 				} else if value.Kind() == reflect.Map {
-					new_value := reflect.MakeMapWithSize(f.Type, value.Len())
+					newValue := reflect.MakeMapWithSize(f.Type, value.Len())
 					iter := value.MapRange()
 					for iter.Next() {
-						new_value.SetMapIndex(iter.Key(), iter.Value().Elem().Convert(f.Type.Elem()))
+						newValue.SetMapIndex(iter.Key(), iter.Value().Elem().Convert(f.Type.Elem()))
 					}
-					reflect.Indirect(v).FieldByName(f.Name).Set(reflect.Indirect(new_value))
+					reflect.Indirect(v).FieldByName(f.Name).Set(reflect.Indirect(newValue))
 				} else if value.Kind() == reflect.Array || value.Kind() == reflect.Slice {
-					new_value := reflect.MakeSlice(f.Type, value.Len(), value.Len())
+					newValue := reflect.MakeSlice(f.Type, value.Len(), value.Len())
 					for i := 0; i < value.Len(); i++ {
-						new_value.Index(i).Set(value.Index(i).Convert(f.Type.Elem()))
+						newValue.Index(i).Set(value.Index(i).Convert(f.Type.Elem()))
 					}
 				} else {
 					diags = append(diags, diag.Errorf("Unexpected schema type (%v), from: %v, to: %v", name, value.Kind(), v.Kind())...)

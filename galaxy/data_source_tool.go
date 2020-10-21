@@ -14,42 +14,42 @@ func dataSourceTool() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataSourceToolRead,
 		Schema: map[string]*schema.Schema{
-			"id": &schema.Schema{
+			"id": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`",
 			},
-			"name": &schema.Schema{
+			"name": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Tool name as displayed to user",
 			},
-			"version": &schema.Schema{
+			"version": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Tool version",
 			},
-			"min_width": &schema.Schema{
+			"min_width": {
 				Type:        schema.TypeInt,
 				Computed:    true,
 				Description: "Minimum width",
 			},
-			"target": &schema.Schema{
+			"target": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Target",
 			},
-			"link": &schema.Schema{
+			"link": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Link",
 			},
-			"panel_section_id": &schema.Schema{
+			"panel_section_id": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Tool panel section id",
 			},
-			"edam_topics": &schema.Schema{
+			"edam_topics": {
 				Type:     schema.TypeList,
 				Computed: true,
 				Elem: &schema.Schema{
@@ -57,12 +57,12 @@ func dataSourceTool() *schema.Resource {
 				},
 				Description: "List of EDAM Ontology topics associated with tool",
 			},
-			"form_style": &schema.Schema{
+			"form_style": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Form style",
 			},
-			"edam_operations": &schema.Schema{
+			"edam_operations": {
 				Type:     schema.TypeList,
 				Computed: true,
 				Elem: &schema.Schema{
@@ -70,7 +70,7 @@ func dataSourceTool() *schema.Resource {
 				},
 				Description: "List of EDAM Ontology operations associated with tool",
 			},
-			"labels": &schema.Schema{
+			"labels": {
 				Type:     schema.TypeList,
 				Computed: true,
 				Elem: &schema.Schema{
@@ -78,17 +78,17 @@ func dataSourceTool() *schema.Resource {
 				},
 				Description: "List of labels associated with tool",
 			},
-			"description": &schema.Schema{
+			"description": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Tool description",
 			},
-			"config_file": &schema.Schema{
+			"config_file": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Config file",
 			},
-			"xrefs": &schema.Schema{
+			"xrefs": {
 				Type:     schema.TypeList,
 				Computed: true,
 				Elem: &schema.Schema{
@@ -96,7 +96,7 @@ func dataSourceTool() *schema.Resource {
 				},
 				Description: "Cross references",
 			},
-			"panel_section_name": &schema.Schema{
+			"panel_section_name": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "Tool panel section name as displayed to user",

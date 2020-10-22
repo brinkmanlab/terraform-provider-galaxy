@@ -2,13 +2,13 @@ module terraform-provider-galaxy
 
 go 1.15
 
-replace (
-	github.com/brinkmanlab/blend4go => ../blend4go
-)
+//replace (
+//	github.com/brinkmanlab/blend4go => ../blend4go
+//)
 
 require (
 	github.com/agext/levenshtein v1.2.3 // indirect
-	github.com/brinkmanlab/blend4go v0.2.0
+	github.com/brinkmanlab/blend4go v0.2.1
 	github.com/fatih/color v1.9.0 // indirect
 	github.com/hashicorp/go-hclog v0.14.1 // indirect
 	github.com/hashicorp/go-multierror v1.1.0 // indirect

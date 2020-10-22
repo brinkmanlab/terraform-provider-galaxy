@@ -8,3 +8,7 @@ Written and maintained by the [Fiona Brinkman Laboratory](https://github.com/bri
 
 # Contributing
 Pull requests are welcome. Please follow all terraform and golang recommended practices.
+`make testacc` must succeed for a PR to be accepted.
+
+Please run `make doc` and commit changes before tagging a release.
+

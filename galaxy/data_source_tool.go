@@ -102,6 +102,7 @@ func dataSourceTool() *schema.Resource {
 				Description: "Tool panel section name as displayed to user",
 			},
 		},
+		Description: "Loads information related to an installed tool",
 	}
 }
 

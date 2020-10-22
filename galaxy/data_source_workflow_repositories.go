@@ -48,7 +48,7 @@ func dataSourceWorkflowRepositories() *schema.Resource {
 				Description: "Set of repositories referenced within workflow",
 			},
 		},
-		Description: "Galaxy workflows are dependant on the presence of the tools they use to be installed in the same Galaxy instance. The data source extracts the tool repositories referenced within the workflow json, listing them for installation. See [resource_repository](./resource_repository) for more information on installing repositories.",
+		Description: "Galaxy workflows are dependant on the presence of the tools they use to be installed in the same Galaxy instance. The data source extracts the tool repositories referenced within the workflow json, listing them for installation. See [resource_repository](../resources/resource_repository) for more information on installing repositories.",
 	}
 }
 

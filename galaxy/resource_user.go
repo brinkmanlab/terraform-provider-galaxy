@@ -149,7 +149,15 @@ func resourceUserRead(ctx context.Context, d *schema.ResourceData, m interface{}
 	g := m.(*blend4go.GalaxyInstance)
 
 	if user, err := users.Get(ctx, g, d.Id(), false); err == nil {
-		return toSchema(user, d, userOmitFields)
+		var diags diag.Diagnostics
+		if apiKey, err := user.GetAPIKey(ctx, d.Get("password").(string)); err == nil {
+			if err := d.Set("api_key", apiKey); err != nil {
+				diags = diag.FromErr(err)
+			}
+		} else {
+			diags = diag.FromErr(err)
+		}
+		return append(diags, toSchema(user, d, userOmitFields)...)
 	} else {
 		return diag.FromErr(err)
 	}

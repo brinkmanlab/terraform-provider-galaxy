@@ -79,5 +79,10 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 
 	c := blend4go.NewGalaxyInstance(host, key.(string))
 
+	// Test connection
+	if _, err := c.Version(ctx); err != nil {
+		diags = append(diags, diag.FromErr(err)...)
+	}
+
 	return c, diags
 }

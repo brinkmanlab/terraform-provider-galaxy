@@ -3,7 +3,7 @@ page_title: Bootstrap a Galaxy admin API key
 ---
 # Bootstrap a Galaxy admin API key using the master API key
 
-Many operations are not permitted using Galaxies mater API key. 
+Many operations are not permitted using Galaxies master API key. 
 To properly configure this provider you need to use an administrator API key.
 This assumes you have configured `admin_users: admin@example.com` in the Galaxy configuration.
 

@@ -19,11 +19,12 @@ provider "galaxy" {
 
 ## Argument Reference
 
-* `api_key` - &lt;String&gt; (Optional) API key associated with a Galaxy administrator account. A master API key will fail to create resources that need to be associated with a user. Refers to GALAXY_API_KEY env variable if unset.  
-  Exactly one of `api_key` or `username`  
+* `apikey` - &lt;String&gt; (Optional) API key associated with a Galaxy administrator account. A master API key will fail to create resources that need to be associated with a user. Refers to GALAXY_API_KEY env variable if unset.  
+  Exactly one of `apikey` or `username`  
 * `host` - &lt;String&gt; (Required) URL to Galaxy instance. Refers to GALAXY_HOST env variable if unset.  
 * `password` - &lt;String&gt; (Optional) Password associated with username. Refers to GALAXY_PASSWORD env variable if unset.  
   Required with `username`  
 * `username` - &lt;String&gt; (Optional) Username or email address of Galaxy administrator account. Refers to GALAXY_USERNAME env variable if unset.  
-  Exactly one of `api_key` or `username`  
+  Exactly one of `apikey` or `username`  
   Required with `password`  
+* `wait_for_host` - &lt;Int&gt; (Optional) Some terraform resources return prematurely causing this provider to fail to resolve the Galaxy host. Specify in seconds how long to wait for the host to become available (0 for forever)  

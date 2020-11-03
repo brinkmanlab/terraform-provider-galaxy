@@ -1,6 +1,6 @@
 # galaxy_tool Data Source
 
-
+Loads information related to an installed tool
 
 ## Example Usage
 

@@ -145,7 +145,7 @@ func resourceStoredWorkflowUpdate(ctx context.Context, d *schema.ResourceData, m
 
 	workflow := new(workflows.StoredWorkflow)
 	workflow.SetGalaxyInstance(g)
-	workflow.SetID(d.Get("id").(string))
+	workflow.SetID(d.Id())
 	workflow.Name = d.Get("name").(string)
 	workflow.Annotation = d.Get("annotation").(string)
 	workflow.ShowInToolPanel = d.Get("show_in_tool_panel").(bool)

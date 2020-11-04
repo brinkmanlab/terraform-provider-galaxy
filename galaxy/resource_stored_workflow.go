@@ -123,7 +123,10 @@ func resourceStoredWorkflow() *schema.Resource {
 func resourceStoredWorkflowCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	g := m.(*blend4go.GalaxyInstance)
 
-	if workflow, err := workflows.NewStoredWorkflow(ctx, g, d.Get("json").(string), d.Get("import_tools").(bool), d.Get("publish").(bool), d.Get("importable").(bool)); err == nil {
+	json := d.Get("json").(string)
+	_ = d.Set("json", HashString(json))
+
+	if workflow, err := workflows.NewStoredWorkflow(ctx, g, json, d.Get("import_tools").(bool), d.Get("publish").(bool), d.Get("importable").(bool)); err == nil {
 		return toSchema(workflow, d, workflowOmitFields)
 	} else {
 		return diag.FromErr(err)
@@ -132,6 +135,9 @@ func resourceStoredWorkflowCreate(ctx context.Context, d *schema.ResourceData, m
 
 func resourceStoredWorkflowRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	g := m.(*blend4go.GalaxyInstance)
+
+	json := d.Get("json").(string)
+	_ = d.Set("json", HashString(json))
 
 	if workflow, err := workflows.Get(ctx, g, d.Id()); err == nil {
 		return toSchema(workflow, d, workflowOmitFields)
@@ -143,13 +149,17 @@ func resourceStoredWorkflowRead(ctx context.Context, d *schema.ResourceData, m i
 func resourceStoredWorkflowUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	g := m.(*blend4go.GalaxyInstance)
 
+	json := d.Get("json").(string)
+	_ = d.Set("json", HashString(json))
+
 	workflow := new(workflows.StoredWorkflow)
 	workflow.SetGalaxyInstance(g)
 	workflow.SetID(d.Id())
 	workflow.Name = d.Get("name").(string)
 	workflow.Annotation = d.Get("annotation").(string)
 	workflow.ShowInToolPanel = d.Get("show_in_tool_panel").(bool)
-	if err := workflow.Update(ctx, d.Get("json").(string)); err != nil {
+
+	if err := workflow.Update(ctx, json); err != nil {
 		return diag.FromErr(err)
 	} else {
 		return nil

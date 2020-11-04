@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"io/ioutil"
+	"terraform-provider-galaxy/galaxy"
 	"testing"
 )
 
@@ -54,6 +55,7 @@ func TestAccWorkflow_basic(t *testing.T) {
 	name := "test"
 	resourceName := "galaxy_stored_workflow." + name
 	workflow, parsedWorkflow, err := loadWorkflow(WorkflowPath)
+	hash := galaxy.HashString(workflow)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -71,7 +73,7 @@ func TestAccWorkflow_basic(t *testing.T) {
 				Config: testAccConfig(tmpl, t, &tmplFields{Name: name, Json: workflow}),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					testAccWorkflowExists(resourceName),
-					resource.TestCheckResourceAttr(resourceName, "json", workflow),
+					resource.TestCheckResourceAttr(resourceName, "json", hash),
 					resource.TestCheckResourceAttr(resourceName, "name", parsedWorkflow["name"].(string)),
 					resource.TestCheckResourceAttr(resourceName, "annotation", parsedWorkflow["annotation"].(string)),
 					//testCheckResourceAttrEquals(resourceName, "tags", parsed_workflow["tags"].([]string)),

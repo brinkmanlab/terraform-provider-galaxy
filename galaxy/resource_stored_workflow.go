@@ -24,7 +24,6 @@ func resourceStoredWorkflow() *schema.Resource {
 			"json": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Sensitive:   true, // Not sensitive, just pollutes logs
 				Description: "JSON encoded workflow. See terraform file() to load a .ga file.",
 			},
 			"name": {

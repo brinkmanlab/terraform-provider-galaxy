@@ -13,7 +13,7 @@ Written and maintained by the [Fiona Brinkman Laboratory](https://github.com/bri
 ```hcl
 provider "galaxy" {
   host = "http://localhost:8080"
-  api_key = "fakekey"
+  apikey = "fakekey"
 }
 ```
 

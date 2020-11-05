@@ -8,10 +8,7 @@
 ## Example Usage
 
 ```hcl
-provider "galaxy" {
-  host = "http://localhost:8080"
-  api_key = "fakekey"
-}
+{{ example "galaxy" }}
 ```
 
 ## Argument Reference

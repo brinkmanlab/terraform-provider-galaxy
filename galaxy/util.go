@@ -1,6 +1,8 @@
 package galaxy
 
 import (
+	"crypto/sha1"
+	"encoding/base64"
 	"github.com/brinkmanlab/blend4go"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -69,4 +71,10 @@ func fromSchema(m blend4go.GalaxyModel, s *schema.ResourceData) diag.Diagnostics
 
 	m.SetID(s.Id())
 	return diags
+}
+
+func HashString(value string) string {
+	h := sha1.New()
+	h.Write([]byte(value))
+	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }

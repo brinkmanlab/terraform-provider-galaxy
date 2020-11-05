@@ -2,8 +2,6 @@ package galaxy
 
 import (
 	"context"
-	"crypto/sha1"
-	"encoding/base64"
 	"github.com/brinkmanlab/blend4go/workflows"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -16,7 +14,7 @@ func dataSourceWorkflowRepositories() *schema.Resource {
 			"json": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Sensitive:   true, // Not sensitive, just pollutes logs
+				StateFunc:   func(v interface{}) string { return HashString(v.(string)) },
 				Description: "JSON encoded workflow. See terraform file() to load a .ga file.",
 			},
 			"repositories": {
@@ -54,7 +52,9 @@ func dataSourceWorkflowRepositories() *schema.Resource {
 }
 
 func dataSourceWorkflowRepositoriesRead(_ context.Context, d *schema.ResourceData, _ interface{}) diag.Diagnostics {
-	if repos, err := workflows.Repositories(d.Get("json").(string)); err == nil {
+	json := d.Get("json").(string)
+	hash := HashString(json)
+	if repos, err := workflows.Repositories(json); err == nil {
 		r := make([]map[string]string, len(repos))
 		for i, repo := range repos {
 			r[i] = map[string]string{
@@ -68,10 +68,7 @@ func dataSourceWorkflowRepositoriesRead(_ context.Context, d *schema.ResourceDat
 			return diag.FromErr(err)
 		}
 
-		// Use sha1 of json as ID
-		h := sha1.New()
-		h.Write([]byte(d.Get("json").(string)))
-		d.SetId(base64.StdEncoding.EncodeToString(h.Sum(nil)))
+		d.SetId(hash)
 	} else {
 		return diag.FromErr(err)
 	}

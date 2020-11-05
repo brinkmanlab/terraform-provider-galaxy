@@ -14,6 +14,7 @@ func dataSourceWorkflowRepositories() *schema.Resource {
 			"json": {
 				Type:        schema.TypeString,
 				Required:    true,
+				StateFunc:   func(v interface{}) string { return HashString(v.(string)) },
 				Description: "JSON encoded workflow. See terraform file() to load a .ga file.",
 			},
 			"repositories": {
@@ -53,7 +54,6 @@ func dataSourceWorkflowRepositories() *schema.Resource {
 func dataSourceWorkflowRepositoriesRead(_ context.Context, d *schema.ResourceData, _ interface{}) diag.Diagnostics {
 	json := d.Get("json").(string)
 	hash := HashString(json)
-	_ = d.Set("json", hash)
 	if repos, err := workflows.Repositories(json); err == nil {
 		r := make([]map[string]string, len(repos))
 		for i, repo := range repos {

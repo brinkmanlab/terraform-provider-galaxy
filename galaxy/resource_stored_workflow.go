@@ -24,6 +24,7 @@ func resourceStoredWorkflow() *schema.Resource {
 			"json": {
 				Type:        schema.TypeString,
 				Required:    true,
+				StateFunc:   func(v interface{}) string { return HashString(v.(string)) },
 				Description: "JSON encoded workflow. See terraform file() to load a .ga file.",
 			},
 			"name": {
@@ -124,7 +125,6 @@ func resourceStoredWorkflowCreate(ctx context.Context, d *schema.ResourceData, m
 	g := m.(*blend4go.GalaxyInstance)
 
 	json := d.Get("json").(string)
-	_ = d.Set("json", HashString(json))
 
 	if workflow, err := workflows.NewStoredWorkflow(ctx, g, json, d.Get("import_tools").(bool), d.Get("publish").(bool), d.Get("importable").(bool)); err == nil {
 		return toSchema(workflow, d, workflowOmitFields)
@@ -135,9 +135,6 @@ func resourceStoredWorkflowCreate(ctx context.Context, d *schema.ResourceData, m
 
 func resourceStoredWorkflowRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	g := m.(*blend4go.GalaxyInstance)
-
-	json := d.Get("json").(string)
-	_ = d.Set("json", HashString(json))
 
 	if workflow, err := workflows.Get(ctx, g, d.Id()); err == nil {
 		return toSchema(workflow, d, workflowOmitFields)
@@ -150,7 +147,6 @@ func resourceStoredWorkflowUpdate(ctx context.Context, d *schema.ResourceData, m
 	g := m.(*blend4go.GalaxyInstance)
 
 	json := d.Get("json").(string)
-	_ = d.Set("json", HashString(json))
 
 	workflow := new(workflows.StoredWorkflow)
 	workflow.SetGalaxyInstance(g)

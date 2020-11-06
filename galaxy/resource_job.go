@@ -266,6 +266,13 @@ func resourceJobCreate(ctx context.Context, d *schema.ResourceData, m interface{
 					break
 				}
 			}
+
+			// If waiting on jobs, that means we need them to succeed
+			for _, job := range jobList {
+				if job.State == "error" {
+					diags = append(diags, diag.Errorf("job %v failed", job.Id)...)
+				}
+			}
 		}
 		diags = append(diags, jobsToSchema(jobList, d)...)
 	} else {

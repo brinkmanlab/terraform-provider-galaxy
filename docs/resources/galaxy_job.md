@@ -43,10 +43,10 @@ resource "galaxy_job" "example" {
 * `history_id` - &lt;String&gt; (Required) Id of history where tool outputs are associated  
 * `params` - &lt;Map&gt; (Optional) Map of parameter values keyed on input id  
   Element type: String
+* `tool_guid` - &lt;String&gt; (Optional) UUID of tool as assigned by Galaxy instance  
+  Exactly one of `tool_id` or `tool_guid`  
 * `tool_id` - &lt;String&gt; (Optional) Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`  
-  Exactly one of `tool_id` or `tool_uuid`  
-* `tool_uuid` - &lt;String&gt; (Optional) UUID of tool as assigned by Galaxy instance  
-  Exactly one of `tool_id` or `tool_uuid`  
+  Exactly one of `tool_id` or `tool_guid`  
 * `wait_for_completion` - &lt;Bool&gt; (Optional) Wait for job to complete before creating dependant resources \[Default: true]  
 
 
@@ -77,8 +77,8 @@ resource "galaxy_job" "example" {
 * `params` - &lt;Map&gt; Map of parameter values keyed on input id  
   Element type: String
 * `state` - &lt;String&gt; Running state of job  
+* `tool_guid` - &lt;String&gt; UUID of tool as assigned by Galaxy instance  
 * `tool_id` - &lt;String&gt; Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`  
-* `tool_uuid` - &lt;String&gt; UUID of tool as assigned by Galaxy instance  
 * `update_time` - &lt;String&gt; Time job state lst updated  
 * `wait_for_completion` - &lt;Bool&gt; Wait for job to complete before creating dependant resources  
 

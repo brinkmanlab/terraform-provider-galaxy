@@ -83,14 +83,14 @@ func resourceJob() *schema.Resource {
 		"tool_id": {
 			Type:         schema.TypeString,
 			Optional:     true,
-			ExactlyOneOf: []string{"tool_id", "tool_uuid"},
+			ExactlyOneOf: []string{"tool_id", "tool_guid"},
 			ForceNew:     true,
 			Description:  "Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`",
 		},
-		"tool_uuid": {
+		"tool_guid": {
 			Type:         schema.TypeString,
 			Optional:     true,
-			ExactlyOneOf: []string{"tool_id", "tool_uuid"},
+			ExactlyOneOf: []string{"tool_id", "tool_guid"},
 			ForceNew:     true,
 			Description:  "UUID of tool as assigned by Galaxy instance",
 		},
@@ -217,7 +217,7 @@ func resourceJobCreate(ctx context.Context, d *schema.ResourceData, m interface{
 	if id, ok := d.GetOk("tool_id"); ok {
 		payload["tool_id"] = id.(string)
 	}
-	if id, ok := d.GetOk("tool_uuid"); ok {
+	if id, ok := d.GetOk("tool_guid"); ok {
 		payload["tool_uuid"] = id.(string)
 	}
 

@@ -15,9 +15,18 @@ func dataSourceTool() *schema.Resource {
 		ReadContext: dataSourceToolRead,
 		Schema: map[string]*schema.Schema{
 			"id": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`",
+				Type:         schema.TypeString,
+				Optional:     true,
+				Computed:     true,
+				ExactlyOneOf: []string{"id", "guid"},
+				Description:  "Tool Id",
+			},
+			"guid": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				Computed:     true,
+				ExactlyOneOf: []string{"id", "guid"},
+				Description:  "Tool guid",
 			},
 			"name": {
 				Type:        schema.TypeString,
@@ -108,9 +117,17 @@ func dataSourceTool() *schema.Resource {
 
 func dataSourceToolRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	g := m.(*blend4go.GalaxyInstance)
+	var diags diag.Diagnostics
+	var id string
+	if tool_id, ok := d.GetOk("id"); ok {
+		id = tool_id.(string)
+	}
+	if tool_id, ok := d.GetOk("guid"); ok {
+		id = tool_id.(string)
+	}
 
-	if tool, err := tools.Get(ctx, g, d.Get("id").(string)); err == nil {
-		return toSchema(tool, d, toolOmitFields)
+	if tool, err := tools.Get(ctx, g, id); err == nil {
+		return append(diags, toSchema(tool, d, toolOmitFields)...)
 	} else {
 		return diag.FromErr(err)
 	}

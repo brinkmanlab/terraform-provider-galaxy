@@ -18,8 +18,7 @@ resource "galaxy_history" "terraform" {
 
 # Run the data manager to load the tools data
 resource "galaxy_job" "load_data" {
-  depends_on = [galaxy_repository.rgi]  # An issue with the Galaxy API requires this. https://github.com/galaxyproject/galaxy/issues/10378
-  tool_id = "toolshed.g2.bx.psu.edu/repos/card/rgi/rgi_database_builder/1.0.0"
+  tool_id = galaxy_repository.rgi.tools[0].tool_guid
   history_id = galaxy_history.terraform.id
   params = {
     "name" = "5.1.1"

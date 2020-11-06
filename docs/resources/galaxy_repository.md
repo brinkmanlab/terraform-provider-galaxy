@@ -53,6 +53,15 @@ resource "galaxy_repository" "example" {
 * `status` - &lt;String&gt; Installation status  
 * `tool_panel_section_id` - &lt;String&gt; Tool panel section ID to list tool under  
 * `tool_shed` - &lt;String&gt; Repository toolshed  
+* `tools` - &lt;Set&gt; List of tools installed by repository  
+  Attributes:  
+  * `config_file` - &lt;String&gt; Path to tool wrapper XML (on toolshed)  
+  * `description` - &lt;String&gt; Tool description  
+  * `name` - &lt;String&gt; Tool name  
+  * `tool_guid` - &lt;String&gt; Tool guid  
+  * `tool_id` - &lt;String&gt; Tool Id  
+  * `version` - &lt;String&gt; Tool version  
+
 * `uninstalled` - &lt;Bool&gt; Uninstalled  
 * `url` - &lt;String&gt; Repository url  
 

@@ -21,7 +21,10 @@ data "galaxy_tool" "awkscript" {
 
 ## Argument Reference
 
-* `id` - &lt;String&gt; (Required) Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`  
+* `guid` - &lt;String&gt; (Optional) Tool guid  
+  Exactly one of `id` or `guid`  
+* `id` - &lt;String&gt; (Optional) Tool Id  
+  Exactly one of `id` or `guid`  
 
 
 ## Attribute Reference
@@ -33,7 +36,8 @@ data "galaxy_tool" "awkscript" {
 * `edam_topics` - &lt;List&gt; List of EDAM Ontology topics associated with tool  
   Element type: String
 * `form_style` - &lt;String&gt; Form style  
-* `id` - &lt;String&gt; Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`  
+* `guid` - &lt;String&gt; Tool guid  
+* `id` - &lt;String&gt; Tool Id  
 * `labels` - &lt;List&gt; List of labels associated with tool  
   Element type: String
 * `link` - &lt;String&gt; Link  

@@ -60,6 +60,8 @@ func TestAccRepository_basic(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "name", "awkscript"),
 					resource.TestCheckResourceAttr(resourceName, "changeset_revision", "ceac6ffb3865"),
 					resource.TestCheckResourceAttrSet(resourceName, "status"),
+					testCheckResourceAttrEqual(resourceName, "tools.#", 1),
+					resource.TestCheckResourceAttr(resourceName, "tools.0.tool_id", "awkscript"),
 					//testCheckResourceAttrEqual(resourceName, "deleted", false),
 				),
 			},

@@ -153,6 +153,45 @@ func resourceRepository() *schema.Resource {
 				Description: "Repository files from disk on uninstall",
 				ForceNew:    true,
 			},
+			"tools": {
+				Type:        schema.TypeSet,
+				Computed:    true,
+				Description: "List of tools installed by repository",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"tool_id": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "Tool Id",
+						},
+						"tool_guid": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "Tool guid",
+						},
+						"name": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "Tool name",
+						},
+						"version": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "Tool version",
+						},
+						"description": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "Tool description",
+						},
+						"config_file": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "Path to tool wrapper XML (on toolshed)",
+						},
+					},
+				},
+			},
 		},
 		Description: "Tools are bundled and installed as repositories made available via [Galaxy Toolshed](https://toolshed.g2.bx.psu.edu/) deployments. This resource represents and manages an installed repository within a Galaxy instance.",
 	}
@@ -206,6 +245,26 @@ func resourceRepositoryCreate(ctx context.Context, d *schema.ResourceData, m int
 		}
 		if err := d.Set("repository_deprecated", repos[0].ToolShedStatus.RepositoryDeprecated); err != nil {
 			diags = append(diags, diag.FromErr(err)...)
+		}
+
+		// Populate tools
+		if tools, err := repos[0].Tools(ctx); err == nil {
+			r := make([]map[string]string, len(tools))
+			for i, tool := range tools {
+				r[i] = map[string]string{
+					"tool_id":     tool.Id,
+					"tool_guid":   tool.Guid,
+					"name":        tool.Name,
+					"version":     tool.Version,
+					"description": tool.Description,
+					"config_file": tool.ConfigFile,
+				}
+			}
+			if err := d.Set("tools", r); err != nil {
+				return diag.FromErr(err)
+			}
+		} else {
+			return diag.FromErr(err)
 		}
 
 		return append(diags, toSchema(repos[0], d, repositoryOmitFields)...)

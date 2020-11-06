@@ -12,7 +12,7 @@ resource "galaxy_history" "test" {
 
 resource "galaxy_job" "example" {
   depends_on = [galaxy_repository.awkscript]
-  tool_id = "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0"  # An issue with the Galaxy API requires this. https://github.com/galaxyproject/galaxy/issues/10378
+  tool_id = galaxy_repository.awkscript.tools[0].tool_guid
   history_id = galaxy_history.test.id
   params = {
     "code" = "BEGIN { print \"foo\" }"

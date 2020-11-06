@@ -249,7 +249,7 @@ func resourceJobCreate(ctx context.Context, d *schema.ResourceData, m interface{
 
 	if jobList, _, _, _, err := jobs.NewJob(ctx, g, payload); err == nil { //TODO Expose job outputs?
 		if d.Get("wait_for_completion").(bool) {
-			complete := true
+			complete := false
 			for !complete {
 				complete = true
 				time.Sleep(2 * time.Second)

@@ -11,8 +11,7 @@ resource "galaxy_history" "test" {
 }
 
 resource "galaxy_job" "example" {
-  depends_on = [galaxy_repository.awkscript]
-  tool_id = galaxy_repository.awkscript.tools[0].tool_guid
+  tool_id = galaxy_repository.awkscript.tools[0].tool_id
   history_id = galaxy_history.test.id
   params = {
     "code" = "BEGIN { print \"foo\" }"

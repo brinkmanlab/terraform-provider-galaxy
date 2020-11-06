@@ -18,8 +18,7 @@ resource "galaxy_history" "test" {
 }
 
 resource "galaxy_job" "example" {
-  depends_on = [galaxy_repository.awkscript]
-  tool_id = galaxy_repository.awkscript.tools[0].tool_guid
+  tool_id = galaxy_repository.awkscript.tools[0].tool_id
   history_id = galaxy_history.test.id
   params = {
     "code" = "BEGIN { print \"foo\" }"
@@ -45,7 +44,7 @@ resource "galaxy_job" "example" {
   Element type: String
 * `tool_guid` - &lt;String&gt; (Optional) UUID of tool as assigned by Galaxy instance  
   Exactly one of `tool_id` or `tool_guid`  
-* `tool_id` - &lt;String&gt; (Optional) Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`  
+* `tool_id` - &lt;String&gt; (Optional) Id of the tool to execute in the form `toolshed hostname/repos/repo owner/repo name/tool name/version`  
   Exactly one of `tool_id` or `tool_guid`  
 * `wait_for_completion` - &lt;Bool&gt; (Optional) Wait for job to complete before creating dependant resources \[Default: true]  
 
@@ -78,7 +77,7 @@ resource "galaxy_job" "example" {
   Element type: String
 * `state` - &lt;String&gt; Running state of job  
 * `tool_guid` - &lt;String&gt; UUID of tool as assigned by Galaxy instance  
-* `tool_id` - &lt;String&gt; Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`  
+* `tool_id` - &lt;String&gt; Id of the tool to execute in the form `toolshed hostname/repos/repo owner/repo name/tool name/version`  
 * `update_time` - &lt;String&gt; Time job state lst updated  
 * `wait_for_completion` - &lt;Bool&gt; Wait for job to complete before creating dependant resources  
 

@@ -154,7 +154,7 @@ func resourceRepository() *schema.Resource {
 				ForceNew:    true,
 			},
 			"tools": {
-				Type:        schema.TypeSet,
+				Type:        schema.TypeSet, // TODO change to map[tool_id] after https://github.com/hashicorp/terraform-plugin-sdk/issues/633
 				Computed:    true,
 				Description: "List of tools installed by repository",
 				Elem: &schema.Resource{

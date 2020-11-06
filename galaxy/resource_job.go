@@ -85,7 +85,7 @@ func resourceJob() *schema.Resource {
 			Optional:     true,
 			ExactlyOneOf: []string{"tool_id", "tool_guid"},
 			ForceNew:     true,
-			Description:  "Id of the tool to execute in the form `toolshed hostname/repo owner/repo name/tool name/version`",
+			Description:  "Id of the tool to execute in the form `toolshed hostname/repos/repo owner/repo name/tool name/version`",
 		},
 		"tool_guid": {
 			Type:         schema.TypeString,

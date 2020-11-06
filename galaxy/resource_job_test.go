@@ -41,14 +41,13 @@ func TestAccJob_basic(t *testing.T) {
 	type tmplFields struct {
 		Name    string
 		JobName string
-		ToolID  string
 	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:          testAccPreCheck(t),
 		ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccConfig(tmpl, t, &tmplFields{Name: name, JobName: "test", ToolID: "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0"}),
+				Config: testAccConfig(tmpl, t, &tmplFields{Name: name, JobName: "test"}),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					testAccJobExists(resourceName),
 					resource.TestCheckResourceAttr(resourceName, "tool_id", "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0"),

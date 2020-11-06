@@ -79,9 +79,9 @@ func Provider() *schema.Provider {
 func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	if host, ok := d.GetOk("host"); ok && host.(string) != "" {
-		if wait, ok := d.GetOk("wait_for_host"); ok {
+		if wait, ok := d.GetOkExists("wait_for_host"); ok {
 			duration := time.Duration(wait.(int)) * time.Second
-			for start := time.Now(); time.Since(start) < duration && ctx.Err() == nil; time.Sleep(time.Second * 2) {
+			for start := time.Now(); (wait == 0 || time.Since(start) < duration) && ctx.Err() == nil; time.Sleep(time.Second * 2) {
 				if res, err := http.Get(host.(string)); err == nil {
 					if res.StatusCode < 400 {
 						break

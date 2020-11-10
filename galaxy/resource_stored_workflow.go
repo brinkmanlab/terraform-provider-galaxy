@@ -25,6 +25,7 @@ func resourceStoredWorkflow() *schema.Resource {
 				Type:        schema.TypeString,
 				Required:    true,
 				StateFunc:   func(v interface{}) string { return HashString(v.(string)) },
+				ForceNew:    true, // https://github.com/galaxyproject/galaxy/issues/10687
 				Description: "JSON encoded workflow. See terraform file() to load a .ga file.",
 			},
 			"name": {

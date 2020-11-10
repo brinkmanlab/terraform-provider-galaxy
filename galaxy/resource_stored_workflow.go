@@ -146,7 +146,10 @@ func resourceStoredWorkflowRead(ctx context.Context, d *schema.ResourceData, m i
 func resourceStoredWorkflowUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	g := m.(*blend4go.GalaxyInstance)
 
-	json := d.Get("json").(string)
+	var j string
+	if d.HasChange("json") {
+		j = d.Get("json").(string)
+	}
 
 	workflow := new(workflows.StoredWorkflow)
 	workflow.SetGalaxyInstance(g)
@@ -155,7 +158,7 @@ func resourceStoredWorkflowUpdate(ctx context.Context, d *schema.ResourceData, m
 	workflow.Annotation = d.Get("annotation").(string)
 	workflow.ShowInToolPanel = d.Get("show_in_tool_panel").(bool)
 
-	if err := workflow.Update(ctx, json); err != nil {
+	if err := workflow.Update(ctx, j); err != nil {
 		return diag.FromErr(err)
 	} else {
 		return nil

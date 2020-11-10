@@ -67,6 +67,8 @@ github.com/brinkmanlab/blend4go v0.2.2 h1:fSyYYfLOLTyCQod3fjEZ3bycC64Y6IQ9ruhnyn
 github.com/brinkmanlab/blend4go v0.2.2/go.mod h1:VMITuBdqOD+VcbCzR5thp/rwDykX72QSCf2rWHVo1po=
 github.com/brinkmanlab/blend4go v0.2.3 h1:5IekApaxCpGfEQXRSHkgnUcri1LG8k5EJKG1kJcJcRQ=
 github.com/brinkmanlab/blend4go v0.2.3/go.mod h1:VMITuBdqOD+VcbCzR5thp/rwDykX72QSCf2rWHVo1po=
+github.com/brinkmanlab/blend4go v0.2.4 h1:PAyez8M7AtXY0kADMqILrr5WH9Ml0qO6yRvFFcsjA2Q=
+github.com/brinkmanlab/blend4go v0.2.4/go.mod h1:VMITuBdqOD+VcbCzR5thp/rwDykX72QSCf2rWHVo1po=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cheggaaa/pb v1.0.27/go.mod h1:pQciLPpbU0oxA0h+VJYYLxO+XeDQb5pZijXscXHm81s=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=

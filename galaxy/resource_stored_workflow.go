@@ -70,7 +70,8 @@ func resourceStoredWorkflow() *schema.Resource {
 			"published": {
 				Type:        schema.TypeBool,
 				Optional:    true,
-				Description: "Published",
+				Default:     false,
+				Description: "Make workflow available to all users",
 			},
 			"owner": {
 				Type:        schema.TypeString,
@@ -105,12 +106,6 @@ func resourceStoredWorkflow() *schema.Resource {
 				Default:     false,
 				Description: "Install tools referenced by workflow",
 			},
-			"publish": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     false,
-				Description: "Make workflow available to all users",
-			},
 			"importable": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -127,7 +122,7 @@ func resourceStoredWorkflowCreate(ctx context.Context, d *schema.ResourceData, m
 
 	json := d.Get("json").(string)
 
-	if workflow, err := workflows.NewStoredWorkflow(ctx, g, json, d.Get("import_tools").(bool), d.Get("publish").(bool), d.Get("importable").(bool)); err == nil {
+	if workflow, err := workflows.NewStoredWorkflow(ctx, g, json, d.Get("import_tools").(bool), d.Get("published").(bool), d.Get("importable").(bool)); err == nil {
 		return toSchema(workflow, d, workflowOmitFields)
 	} else {
 		return diag.FromErr(err)

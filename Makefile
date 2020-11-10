@@ -3,7 +3,7 @@ HOSTNAME=brinkmanlab.ca
 NAMESPACE=brinkmanlab
 NAME=galaxy
 BINARY=terraform-provider-${NAME}
-VERSION=0.2.6
+VERSION=0.2.5
 OS_ARCH=linux_amd64
 
 .ONESHELL:

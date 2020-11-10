@@ -17,8 +17,7 @@ resource "galaxy_stored_workflow" "example" {
 * `importable` - &lt;Bool&gt; (Optional) Allow users to import workflow  
 * `json` - &lt;String&gt; (Required) JSON encoded workflow. See terraform file() to load a .ga file.  
 * `name` - &lt;String&gt; (Optional) Name of stored workflow as displayed to user  
-* `publish` - &lt;Bool&gt; (Optional) Make workflow available to all users  
-* `published` - &lt;Bool&gt; (Optional) Published  
+* `published` - &lt;Bool&gt; (Optional) Make workflow available to all users  
 * `show_in_tool_panel` - &lt;Bool&gt; (Optional) Show in tool panel in Galaxy UI  
 * `tags` - &lt;List&gt; (Optional) List of tags assigned to workflow  
   Element type: String
@@ -35,8 +34,7 @@ resource "galaxy_stored_workflow" "example" {
 * `name` - &lt;String&gt; Name of stored workflow as displayed to user  
 * `number_of_steps` - &lt;Int&gt; Count of steps in workflow  
 * `owner` - &lt;String&gt; User workflow is assigned to  
-* `publish` - &lt;Bool&gt; Make workflow available to all users  
-* `published` - &lt;Bool&gt; Published  
+* `published` - &lt;Bool&gt; Make workflow available to all users  
 * `show_in_tool_panel` - &lt;Bool&gt; Show in tool panel in Galaxy UI  
 * `tags` - &lt;List&gt; List of tags assigned to workflow  
   Element type: String

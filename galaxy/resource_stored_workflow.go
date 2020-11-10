@@ -37,6 +37,7 @@ func resourceStoredWorkflow() *schema.Resource {
 				Type:     schema.TypeList,
 				Optional: true,
 				Computed: true,
+				ForceNew: true, // TODO https://github.com/galaxyproject/galaxy/issues/10684
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
 				},
@@ -71,6 +72,7 @@ func resourceStoredWorkflow() *schema.Resource {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
+				ForceNew:    true, // TODO https://github.com/galaxyproject/galaxy/issues/10682
 				Description: "Make workflow available to all users",
 			},
 			"owner": {
@@ -104,12 +106,14 @@ func resourceStoredWorkflow() *schema.Resource {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
+				ForceNew:    true,
 				Description: "Install tools referenced by workflow",
 			},
 			"importable": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
+				ForceNew:    true, // TODO https://github.com/galaxyproject/galaxy/issues/10683
 				Description: "Allow users to import workflow",
 			},
 		},

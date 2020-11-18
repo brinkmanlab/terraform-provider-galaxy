@@ -127,11 +127,6 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 
 		c := blend4go.NewGalaxyInstanceLogger(host.(string), key.(string), log.Writer(), level)
 
-		// Test connection
-		if _, err := c.Version(ctx); err != nil {
-			diags = append(diags, diag.FromErr(err)...)
-		}
-
 		return c, diags
 	} else {
 		return nil, diag.Errorf("Galaxy host URL must be provided and non-empty")

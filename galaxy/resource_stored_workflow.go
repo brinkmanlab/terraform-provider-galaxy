@@ -57,6 +57,7 @@ func resourceStoredWorkflow() *schema.Resource {
 			"show_in_tool_panel": {
 				Type:        schema.TypeBool,
 				Optional:    true,
+				Computed:    true,
 				Description: "Show in tool panel in Galaxy UI",
 			},
 			"url": {
@@ -92,6 +93,7 @@ func resourceStoredWorkflow() *schema.Resource {
 			"annotation": {
 				Type:        schema.TypeString,
 				Optional:    true,
+				Computed:    true,
 				Description: "Workflow annotation",
 			},
 			"version": {

@@ -197,6 +197,29 @@ func resourceRepository() *schema.Resource {
 	}
 }
 
+// Populate tools
+func populateTools(ctx context.Context, d *schema.ResourceData, repo *repositories.Repository) diag.Diagnostics {
+	if tools, err := repo.Tools(ctx); err == nil {
+		r := make([]map[string]string, len(tools))
+		for i, tool := range tools {
+			r[i] = map[string]string{
+				"tool_id":     tool.Id,
+				"tool_guid":   tool.Guid,
+				"name":        tool.Name,
+				"version":     tool.Version,
+				"description": tool.Description,
+				"config_file": tool.ConfigFile,
+			}
+		}
+		if err := d.Set("tools", r); err != nil {
+			return diag.FromErr(err)
+		}
+	} else {
+		return diag.FromErr(err)
+	}
+	return nil
+}
+
 func resourceRepositoryCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	g := m.(*blend4go.GalaxyInstance)
 
@@ -247,25 +270,7 @@ func resourceRepositoryCreate(ctx context.Context, d *schema.ResourceData, m int
 			diags = append(diags, diag.FromErr(err)...)
 		}
 
-		// Populate tools
-		if tools, err := repos[0].Tools(ctx); err == nil {
-			r := make([]map[string]string, len(tools))
-			for i, tool := range tools {
-				r[i] = map[string]string{
-					"tool_id":     tool.Id,
-					"tool_guid":   tool.Guid,
-					"name":        tool.Name,
-					"version":     tool.Version,
-					"description": tool.Description,
-					"config_file": tool.ConfigFile,
-				}
-			}
-			if err := d.Set("tools", r); err != nil {
-				return diag.FromErr(err)
-			}
-		} else {
-			return diag.FromErr(err)
-		}
+		diags = append(diags, populateTools(ctx, d, repos[0])...)
 
 		return append(diags, toSchema(repos[0], d, repositoryOmitFields)...)
 	} else {
@@ -277,7 +282,10 @@ func resourceRepositoryRead(ctx context.Context, d *schema.ResourceData, m inter
 	g := m.(*blend4go.GalaxyInstance)
 
 	if repo, err := repositories.Get(ctx, g, d.Id()); err == nil {
-		return toSchema(repo, d, repositoryOmitFields)
+		var diags diag.Diagnostics
+		diags = append(diags, populateTools(ctx, d, repo)...)
+		diags = append(diags, toSchema(repo, d, repositoryOmitFields)...)
+		return diags
 	} else {
 		return diag.FromErr(err)
 	}

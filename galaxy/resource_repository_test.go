@@ -68,3 +68,39 @@ func TestAccRepository_basic(t *testing.T) {
 		},
 	})
 }
+
+func TestAccRepository_tool_changset(t *testing.T) {
+	tmpl := testAccConfigTemplate(RepositoryResourcePath, t)
+	name := "test"
+	resourceName := "galaxy_repository." + name
+	type tmplFields struct {
+		Name              string
+		RepositoryName    string
+		Toolshed          string
+		Owner             string
+		RepoName          string
+		ChangesetRevision string
+	}
+	resource.Test(t, resource.TestCase{
+		PreCheck:          testAccPreCheck(t),
+		IDRefreshName:     resourceName,
+		ProviderFactories: testAccProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccConfig(tmpl, t, &tmplFields{Name: name, RepositoryName: "test", Toolshed: "toolshed.g2.bx.psu.edu", Owner: "card", RepoName: "rgi", ChangesetRevision: "a671367c326e"}),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					testAccRepositoryExists(resourceName),
+					resource.TestCheckResourceAttr(resourceName, "tool_shed", "toolshed.g2.bx.psu.edu"),
+					resource.TestCheckResourceAttr(resourceName, "owner", "card"),
+					resource.TestCheckResourceAttr(resourceName, "name", "rgi"),
+					resource.TestCheckResourceAttr(resourceName, "changeset_revision", "a671367c326e"),
+					resource.TestCheckResourceAttrSet(resourceName, "status"),
+					testCheckResourceAttrEqual(resourceName, "tools.#", 2),
+					resource.TestCheckResourceAttr(resourceName, "tools.0.tool_id", "rgi_database_builder"),
+					resource.TestCheckResourceAttr(resourceName, "tools.0.version", "1.1.0"),
+					//testCheckResourceAttrEqual(resourceName, "deleted", false),
+				),
+			},
+		},
+	})
+}

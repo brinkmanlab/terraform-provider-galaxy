@@ -17,7 +17,7 @@ resource "galaxy_repository" "example" {
 ## Argument Reference
 
 * `changeset_revision` - &lt;String&gt; (Required) Changeset revision of repository  
-* `install_repository_dependencies` - &lt;Bool&gt; *Depreciated* (Optional) Install repository dependencies from toolshed  
+* `install_repository_dependencies` - &lt;Bool&gt; (Optional) Install repository dependencies from toolshed \[Default: true]  
 * `install_resolver_dependencies` - &lt;Bool&gt; (Optional) Install resolver dependencies  
 * `install_tool_dependencies` - &lt;Bool&gt; (Optional) Install tool dependencies using the configured dependency manager  
 * `name` - &lt;String&gt; (Required) Repository name  
@@ -38,7 +38,7 @@ resource "galaxy_repository" "example" {
 * `dist_to_shed` - &lt;Bool&gt;   
 * `error_message` - &lt;String&gt; Install error message  
 * `include_datatypes` - &lt;Bool&gt; Repository includes datatypes  
-* `install_repository_dependencies` - &lt;Bool&gt; *Depreciated* Install repository dependencies from toolshed  
+* `install_repository_dependencies` - &lt;Bool&gt; Install repository dependencies from toolshed  
 * `install_resolver_dependencies` - &lt;Bool&gt; Install resolver dependencies  
 * `install_tool_dependencies` - &lt;Bool&gt; Install tool dependencies using the configured dependency manager  
 * `installed_changeset_revision` - &lt;String&gt; Installed changeset revision  

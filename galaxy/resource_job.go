@@ -191,7 +191,7 @@ func jobsToSchema(job []*jobs.Job, d *schema.ResourceData) diag.Diagnostics {
 	var additionalJobs []map[string]interface{}
 	for _, j := range job[1:] {
 		aj := map[string]interface{}{}
-		if decoder, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{TagName: "json", Result: aj}); err == nil {
+		if decoder, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{TagName: "json", Result: &aj}); err == nil {
 			if err := decoder.Decode(j); err != nil {
 				diags = append(diags, diag.FromErr(err)...)
 			}

@@ -51,6 +51,36 @@ resource "galaxy_repository" "example" {
 * `revision_update` - &lt;String&gt; https://github.com/galaxyproject/galaxy/issues/10453  
 * `revision_upgrade` - &lt;String&gt; https://github.com/galaxyproject/galaxy/issues/10453  
 * `status` - &lt;String&gt; Installation status  
+* `sub_repositories` - &lt;List&gt; If the repository is a suite or otherwise depends on other repositories, they will be listed here  
+  Attributes:  
+  * `changeset_revision` - &lt;String&gt; Changeset revision of repository  
+  * `ctx_rev` - &lt;String&gt;   
+  * `deleted` - &lt;Bool&gt; Repository deleted  
+  * `dist_to_shed` - &lt;Bool&gt;   
+  * `error_message` - &lt;String&gt; Install error message  
+  * `id` - &lt;String&gt; Galaxy ID of installed repository  
+  * `include_datatypes` - &lt;Bool&gt; Repository includes datatypes  
+  * `installed_changeset_revision` - &lt;String&gt; Installed changeset revision  
+  * `latest_installable_revision` - &lt;String&gt; Latest installable revision of repository  
+  * `name` - &lt;String&gt; Repository name  
+  * `owner` - &lt;String&gt; Repository owner  
+  * `repository_deprecated` - &lt;String&gt; Repository depreciated. https://github.com/galaxyproject/galaxy/issues/10453  
+  * `revision_update` - &lt;String&gt; https://github.com/galaxyproject/galaxy/issues/10453  
+  * `revision_upgrade` - &lt;String&gt; https://github.com/galaxyproject/galaxy/issues/10453  
+  * `status` - &lt;String&gt; Installation status  
+  * `tool_shed` - &lt;String&gt; Repository toolshed  
+  * `tools` - &lt;Set&gt; List of tools installed by repository  
+    Attributes:  
+    * `config_file` - &lt;String&gt; Path to tool wrapper XML (on toolshed)  
+    * `description` - &lt;String&gt; Tool description  
+    * `name` - &lt;String&gt; Tool name  
+    * `tool_guid` - &lt;String&gt; Tool guid  
+    * `tool_id` - &lt;String&gt; Tool Id  
+    * `version` - &lt;String&gt; Tool version  
+
+  * `uninstalled` - &lt;Bool&gt; Uninstalled  
+  * `url` - &lt;String&gt; Repository url  
+
 * `tool_panel_section_id` - &lt;String&gt; Tool panel section ID to list tool under  
 * `tool_shed` - &lt;String&gt; Repository toolshed  
 * `tools` - &lt;Set&gt; List of tools installed by repository  

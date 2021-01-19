@@ -332,7 +332,7 @@ func resourceRepositoryRead(ctx context.Context, d *schema.ResourceData, m inter
 
 	if repo, err := repositories.Get(ctx, g, d.Id()); err == nil {
 		var diags diag.Diagnostics
-		diags = append(diags, populateTools(ctx, d, repo)...)
+		//diags = append(diags, populateTools(ctx, d, repo)...)
 		diags = append(diags, toSchema(repo, d, repositoryOmitFields)...)
 		if repos := d.Get("sub_repositories"); len(repos.([]interface{})) > 0 {
 			var subRepos []map[string]interface{}

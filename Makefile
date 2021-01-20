@@ -3,7 +3,7 @@ HOSTNAME=brinkmanlab.ca
 NAMESPACE=brinkmanlab
 NAME=galaxy
 BINARY=terraform-provider-${NAME}
-VERSION=0.2.5
+VERSION=0.2.11
 OS_ARCH=linux_amd64
 
 .ONESHELL:
@@ -37,7 +37,7 @@ release:
 .PHONY: install
 install: build
 	mkdir -p ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
-	mv ${BINARY} ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
+	mv ./bin/registry.terraform.io/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}/${BINARY}_${VERSION} ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
 
 .PHONY: test
 test: 

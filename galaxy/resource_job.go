@@ -314,7 +314,7 @@ func resourceJobDelete(ctx context.Context, d *schema.ResourceData, m interface{
 	g := m.(*blend4go.GalaxyInstance)
 	job := new(jobs.Job)
 	job.SetGalaxyInstance(g)
-	diags = append(diags, fromSchema(job, d)...)
+	diags = append(diags, fromSchema(job, d, nil)...)
 	if err := job.Delete(ctx); err != nil {
 		diags = append(diags, diag.FromErr(err)...)
 	}

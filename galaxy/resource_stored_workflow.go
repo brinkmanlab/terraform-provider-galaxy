@@ -173,7 +173,7 @@ func resourceStoredWorkflowDelete(ctx context.Context, d *schema.ResourceData, m
 	g := m.(*blend4go.GalaxyInstance)
 	workflow := new(workflows.StoredWorkflow)
 	workflow.SetGalaxyInstance(g)
-	diags = append(diags, fromSchema(workflow, d)...)
+	diags = append(diags, fromSchema(workflow, d, nil)...)
 	if err := workflow.Delete(ctx); err != nil {
 		diags = append(diags, diag.FromErr(err)...)
 	}

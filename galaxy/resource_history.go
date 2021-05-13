@@ -173,7 +173,7 @@ func resourceHistoryUpdate(ctx context.Context, d *schema.ResourceData, m interf
 	history := new(histories.History)
 	history.SetGalaxyInstance(g)
 	var diags diag.Diagnostics
-	diags = append(diags, fromSchema(history, d)...)
+	diags = append(diags, fromSchema(history, d, nil)...)
 	if err := history.Update(ctx); err != nil {
 		diags = append(diags, diag.FromErr(err)...)
 	}
@@ -186,7 +186,7 @@ func resourceHistoryDelete(ctx context.Context, d *schema.ResourceData, m interf
 	g := m.(*blend4go.GalaxyInstance)
 	history := new(histories.History)
 	history.SetGalaxyInstance(g)
-	diags = append(diags, fromSchema(history, d)...)
+	diags = append(diags, fromSchema(history, d, nil)...)
 	if err := history.Delete(ctx, d.Get("purge").(bool)); err != nil {
 		diags = append(diags, diag.FromErr(err)...)
 	}

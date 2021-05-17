@@ -68,6 +68,7 @@ func Provider() *schema.Provider {
 			"galaxy_job":             resourceJob(),
 			"galaxy_repository":      resourceRepository(),
 			"galaxy_history":         resourceHistory(),
+			"galaxy_quota":           resourceQuota(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"galaxy_workflow_repositories": dataSourceWorkflowRepositories(),

@@ -22,26 +22,7 @@ func dataSourceWorkflowRepositories() *schema.Resource {
 				Computed: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
-						"name": {
-							Type:        schema.TypeString,
-							Computed:    true,
-							Description: "Repository name",
-						},
-						"tool_shed": {
-							Type:        schema.TypeString,
-							Computed:    true,
-							Description: "Toolshed hostname",
-						},
-						"owner": {
-							Type:        schema.TypeString,
-							Computed:    true,
-							Description: "Repository owner",
-						},
-						"changeset_revision": {
-							Type:        schema.TypeString,
-							Computed:    true,
-							Description: "Changeset revision",
-						},
+						// Refactor resource_repository fields and import here
 					},
 				},
 				Description: "Set of repositories referenced within workflow",

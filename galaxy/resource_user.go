@@ -97,6 +97,7 @@ func resourceUser() *schema.Resource {
 				Description: "Purge a user on deletion",
 			},
 		},
+		Importer:    &schema.ResourceImporter{StateContext: schema.ImportStatePassthroughContext},
 		Description: "Create and manage Galaxy users. Used mostly to configure admin users.",
 	}
 }

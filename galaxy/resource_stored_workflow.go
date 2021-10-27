@@ -120,6 +120,7 @@ func resourceStoredWorkflow() *schema.Resource {
 				Description: "Allow users to import workflow",
 			},
 		},
+		Importer:    &schema.ResourceImporter{StateContext: schema.ImportStatePassthroughContext},
 		Description: "[Galaxy workflows](https://galaxyproject.org/learn/advanced-workflow/) are groups of jobs chained together to process data. This resource represents and manages a workflow stored in a Galaxy instance.",
 	}
 }

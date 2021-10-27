@@ -143,6 +143,7 @@ func resourceHistory() *schema.Resource {
 				Description: "Purge history on delete",
 			},
 		},
+		Importer:    &schema.ResourceImporter{StateContext: schema.ImportStatePassthroughContext},
 		Description: "Galaxy histories organise and group data into 'workspaces'. All datasets must be associated with a history, including job outputs.",
 	}
 }

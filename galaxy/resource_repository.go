@@ -216,6 +216,7 @@ func resourceRepository() *schema.Resource {
 		//UpdateContext: resourceRepositoryUpdate,
 		DeleteContext: resourceRepositoryDelete,
 		Schema:        repo,
+		Importer:      &schema.ResourceImporter{StateContext: schema.ImportStatePassthroughContext},
 		Description:   "Tools are bundled and installed as repositories made available via [Galaxy Toolshed](https://toolshed.g2.bx.psu.edu/) deployments. This resource represents and manages an installed repository within a Galaxy instance.",
 	}
 }

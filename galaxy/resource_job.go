@@ -180,6 +180,7 @@ func resourceJob() *schema.Resource {
 		ReadContext:   resourceJobRead,
 		DeleteContext: resourceJobDelete,
 		Schema:        firstJob,
+		Importer:      &schema.ResourceImporter{StateContext: schema.ImportStatePassthroughContext},
 		Description:   "Execute tools to load data. This is mainly intended for data managers or upload/download tools. Do not use this for data processing!",
 	}
 }

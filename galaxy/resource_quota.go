@@ -112,6 +112,7 @@ func resourceQuota() *schema.Resource {
 				Description: "Purge a user on deletion",
 			},
 		},
+		Importer:    &schema.ResourceImporter{StateContext: schema.ImportStatePassthroughContext},
 		Description: "Galaxy quotas regulate the amount of data a user can store in their account at any one time.",
 	}
 }

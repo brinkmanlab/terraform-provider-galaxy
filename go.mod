@@ -2,9 +2,9 @@ module terraform-provider-galaxy
 
 go 1.15
 
-//replace (
-//	github.com/brinkmanlab/blend4go => ../blend4go
-//)
+replace (
+	github.com/brinkmanlab/blend4go => ../blend4go
+)
 
 require (
 	github.com/agext/levenshtein v1.2.3 // indirect
